@@ -1,8 +1,7 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { useState } from "react";
-const API_KEY = "AIzaSyCHqceSU0vMZXofguGFQTu_rK7fOxRIhI8";
 
-const genAI = new GoogleGenerativeAI(`${API_KEY}`); // Replace with your API key
+const genAI = new GoogleGenerativeAI(`saghgh`);
 
 export async function getTaskInsights(task) {
   if (!task) return;
