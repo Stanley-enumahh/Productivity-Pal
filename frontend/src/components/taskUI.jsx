@@ -8,7 +8,7 @@ export function TaskUI({ taskArray, setTaskArray }) {
   const [isOpen, setIsOpen] = useState(false);
   const [progressReport, setProgressReport] = useState("Loading insights...");
 
-  const [memberName, setMemberName] = useState("");
+  const [milestoneTitle, setMilestoneTitle] = useState("");
 
   const [task, setTask] = useState({
     title: "business talks with peter",
@@ -17,19 +17,22 @@ export function TaskUI({ taskArray, setTaskArray }) {
     dueDate: "",
     completeness: 0,
     remainingDays: "",
-    members: [],
+    milestones: [],
   });
 
-  function handleAddMembers() {
-    if (!memberName.trim()) return;
-    if (task.members.length < 3) {
-      const newMember = { name: memberName, id: crypto.randomUUID() };
+  function handleAddMilestone() {
+    if (!milestoneTitle.trim()) return;
+    if (task.milestones.length < 3) {
+      const newMilestone = {
+        title: milestoneTitle,
+        id: crypto.randomUUID(),
+      };
 
       setTask((prevTask) => ({
         ...prevTask,
-        members: [...prevTask.members, newMember],
+        milestones: [...prevTask.milestones, newMilestone],
       }));
-      setMemberName("");
+      setMilestoneTitle("");
     }
   }
 
@@ -46,7 +49,7 @@ export function TaskUI({ taskArray, setTaskArray }) {
       priority: task.priority,
       completeness: task.completeness,
       completed: false,
-      members: [...task.members],
+      milestones: [...task.milestones],
       remainingDays: Math.ceil(
         (new Date(task.dueDate) - new Date()) / (1000 * 60 * 60 * 24)
       ),
@@ -64,7 +67,7 @@ export function TaskUI({ taskArray, setTaskArray }) {
       priority: "low",
       dueDate: "",
       completeness: 0,
-      members: [],
+      milestones: [],
     });
     setIsOpen(false);
   }
@@ -119,9 +122,9 @@ export function TaskUI({ taskArray, setTaskArray }) {
             setTask={setTask}
             onDateChange={onDateChange}
             setIsOpen={setIsOpen}
-            memberName={memberName}
-            setMemberName={setMemberName}
-            handleAddMembers={handleAddMembers}
+            milestoneTitle={milestoneTitle}
+            setMilestoneTitle={setMilestoneTitle}
+            handleAddMilestone={handleAddMilestone}
           />
         )}
 
@@ -142,12 +145,12 @@ function TaskForm({
   task,
   onDateChange,
   setIsOpen,
-  memberName,
-  setMemberName,
-  handleAddMembers,
+  milestoneTitle,
+  setMilestoneTitle,
+  handleAddMilestone,
 }) {
   return (
-    <div className="w-[330px] dark:bg-[#0b3954] transition-all duration-200 dark:text-neutral-200 h-[400px] relative p-4 rounded-lg flex flex-col gap-4 items-center bg-gray-200">
+    <div className="w-[330px] dark:bg-[#0b3954] transition-all duration-200 dark:text-neutral-200 h-[420px] relative p-4 rounded-lg flex flex-col gap-4 items-center bg-gray-200">
       <span className="w-full flex justify-end">
         <button
           onClick={() => setIsOpen(false)}
@@ -193,32 +196,34 @@ function TaskForm({
 
       <div className="flex flex-row justify-between w-full">
         <input
-          value={memberName}
-          onChange={(e) => setMemberName(e.target.value)}
+          value={milestoneTitle}
+          onChange={(e) => setMilestoneTitle(e.target.value)}
           type="text"
-          placeholder="+ Add task member"
+          placeholder="+ Add milestone"
           className="border outline-none border-gray-300 rounded-lg py-1 w-[70%] text-xs px-3"
         />
 
         <button
-          onClick={handleAddMembers}
+          onClick={handleAddMilestone}
           className="px-2 rounded-md border border-gray-300 text-xs cursor-pointer hover:bg-gray-400 transition-all duration-200"
         >
           add
         </button>
       </div>
       <ul className="flex flex-row gap-2 flex-wrap w-full text-xs justify-start">
-        {task.members.map((member) => (
+        {task.milestones.map((milestone) => (
           <li
-            key={member.id}
+            key={milestone.id}
             className="border border-gray-300  px-2 rounded-sm flex flex-row gap-2"
           >
-            <p className=" py-1 capitalize">{member.name}</p>
+            <p className=" py-1 capitalize">{milestone.title}</p>
             <button
               onClick={() =>
                 setTask((prevTask) => ({
                   ...prevTask,
-                  members: prevTask.members.filter((m) => m.id !== member.id),
+                  milestones: prevTask.milestones.filter(
+                    (m) => m.id !== milestone.id
+                  ),
                 }))
               }
               className="text-sm text-red-700 cursor-pointer"

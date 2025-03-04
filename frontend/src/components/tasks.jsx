@@ -35,6 +35,40 @@ export function Tasks({ taskArray, setTaskArray }) {
     setTaskArray(taskArray.filter((tasks) => tasks.id !== selectedId));
   }
 
+  function toggleCompleteMilestone(taskId, milestoneId) {
+    const updatedTasks = taskArray.map((task) => {
+      if (task.id !== taskId) return task;
+
+      const updatedMilestones = (task.milestone || []).map((milestone) => {
+        milestone.id === milestoneId
+          ? {
+              ...milestone,
+              completed: !milestone.completed,
+            }
+          : milestone;
+      });
+
+      const totalMilestone = updatedMilestones.length;
+      const completedMilestone = updatedMilestones.filter(
+        (m) => m.completed
+      ).length;
+      const completeness =
+        totalMilestone > 0
+          ? Math.round((completedMilestone / totalMilestone) * 100)
+          : 0;
+
+      return {
+        ...task,
+        milestones: updatedMilestones,
+        completeness,
+        completed: completeness === 100,
+      };
+    });
+
+    setTaskArray(updatedTasks);
+    localStorage.setItem("task", JSON.stringify(updatedTasks));
+  }
+
   return (
     <div className="w-full flex flex-col gap-3">
       {taskArray.length > 1 && (
@@ -171,6 +205,26 @@ export function Tasks({ taskArray, setTaskArray }) {
                 In Progress
               </p>
             )}
+
+            <ul className="flex flex-col gap-2">
+              {task.milestones?.map((milestone) => (
+                <li
+                  key={milestone.id}
+                  className="flex flex-row items-center gap-2"
+                >
+                  <input
+                    type="checkbox"
+                    name=""
+                    id=""
+                    value={milestone.completed}
+                    onChange={() =>
+                      toggleCompleteMilestone(task.id, milestone.id)
+                    }
+                  />
+                  <p>{milestone.title}</p>
+                </li>
+              ))}
+            </ul>
 
             <button
               onClick={() => handleSelectedTask(task)}
