@@ -21,7 +21,6 @@ export function Tasks({ taskArray, setTaskArray }) {
 
   async function handleSelectedTask(task) {
     setSelectedTask(task);
-    console.log(selectedTask.title);
 
     const insight = await getTaskInsights(task);
     setTaskInsight(insight);
@@ -39,14 +38,11 @@ export function Tasks({ taskArray, setTaskArray }) {
     const updatedTasks = taskArray.map((task) => {
       if (task.id !== taskId) return task;
 
-      const updatedMilestones = (task.milestone || []).map((milestone) => {
+      const updatedMilestones = task.milestones.map((milestone) =>
         milestone.id === milestoneId
-          ? {
-              ...milestone,
-              completed: !milestone.completed,
-            }
-          : milestone;
-      });
+          ? { ...milestone, completed: !milestone.completed }
+          : milestone
+      );
 
       const totalMilestone = updatedMilestones.length;
       const completedMilestone = updatedMilestones.filter(
@@ -163,26 +159,10 @@ export function Tasks({ taskArray, setTaskArray }) {
             </p>
 
             <div className="flex flex-row justify-between items-center">
-              <input
-                min={0}
-                max={100}
-                type="range"
-                className="w-[200px] cursor-pointer focus:outline-none duration-200 transition-all rounded-sm accent-blue-600"
-                value={task.completeness}
-                onChange={(e) => {
-                  const updatedTask = taskArray.map((t) =>
-                    t.id === task.id
-                      ? {
-                          ...t,
-                          completeness: Number(e.target.value),
-                          completed: Number(e.target.value) === 100,
-                        }
-                      : t
-                  );
-                  setTaskArray(updatedTask);
-                  localStorage.setItem("task", JSON.stringify(updatedTask));
-                }}
-              />
+              <div
+                style={{ width: `${task.completeness}%` }}
+                className="bg-red-300 h-2 rounded-md"
+              ></div>
 
               <p className="text-blue-600 font-semibold dark:text-neutral-200 transition-all duration-200">
                 {task.completeness}%
@@ -216,7 +196,7 @@ export function Tasks({ taskArray, setTaskArray }) {
                     type="checkbox"
                     name=""
                     id=""
-                    value={milestone.completed}
+                    checked={milestone.completed}
                     onChange={() =>
                       toggleCompleteMilestone(task.id, milestone.id)
                     }
