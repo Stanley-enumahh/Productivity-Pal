@@ -43,13 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
-    # My apps
-    'api',
-
-
-     # Third-party apps
-    "corsheaders",
+    'api',  # Ensure this line is present
+    'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
 ]
@@ -91,10 +86,15 @@ WSGI_APPLICATION = 'productivitypal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # or 'django.db.backends.mysql' or 'sqlite3'
+        'NAME': 'your_database_name',
+        'USER': 'your_database_user',
+        'PASSWORD': 'your_database_password',
+        'HOST': 'localhost',  # or database host
+        'PORT': '5432',  # PostgreSQL default is 5432, MySQL is 3306
     }
 }
+
 
 
 # Password validation
@@ -124,6 +124,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
 }
+
 
 
 SIMPLE_JWT = {
@@ -166,6 +167,16 @@ STATIC_URL = 'static/'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = 'your-email@example.com'
 # EMAIL_HOST_PASSWORD = 'your-email-password'
+
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.getenv('EMAIL_USER')  # Store in .env
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')  # Store in .env
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
