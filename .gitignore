@@ -8,6 +8,7 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+node_modules/
 dist
 dist-ssr
 *.local
@@ -22,3 +23,44 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+.env
+venv
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff:
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.sql
+*.sqlite3
+db.sqlite3
+
+# Migrations
+*/migrations/*
+
+# Media
+media/
+staticfiles/
+
+# Secret settings (e.g., environment variables)
+.env
+
+# Node modules (optional)
+node_modules/

@@ -1,14 +1,16 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import PasswordResetForm
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 
 User = get_user_model()
 
 class RegisterSerializer(serializers.ModelSerializer):
-    password2 = serializers.CharField(write_only=True)  # Explicitly define password2
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'email', 'password', 'password2']
+        fields = ['username', 'email', 'password']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -17,25 +19,42 @@ class RegisterSerializer(serializers.ModelSerializer):
         username = data.get('username')
         email = data.get('email')
         password = data.get('password')
-        password2 = data.get('password2')
 
         if User.objects.filter(username=username).exists():
             raise serializers.ValidationError({'username': 'User with this username already exists.'})
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError({'email': 'User with this email already exists.'})
-        if password != password2:
-            raise serializers.ValidationError({'password2': 'Passwords do not match.'})
+
 
         return data
 
     def create(self, validated_data):
-        validated_data.pop('password2')  # Remove password2 before creating the user
         user = User(
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
             username=validated_data['username'],
             email=validated_data['email'],
         )
         user.set_password(validated_data['password'])
         user.save()
         return user
+
+
+class PasswordResetSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+    def validate_email(self, value):
+        # chacking if the submitted email exists in the database
+        if not User.objects.filter(email=value).exists():
+            raise ValidationError(_("No user is registered with this email address."))
+        return value
+    
+    def save(self, request):
+        # creating the password reset form and initiating the reset process
+        form = PasswordResetForm(data=self.validated_data)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                from_email=None,
+                email_template_name='emails/password_reset_email.html',
+                subject_template_name='emails/password_reset_subject.txt'
+            )

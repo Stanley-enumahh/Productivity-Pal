@@ -43,11 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'api', 
+
+    #  My apps
+    'api', 
+
+    # Installed apps
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
-    'productivitypal.api',
+    'rest_framework_simplejwt.token_blacklist'
 ]
 
 MIDDLEWARE = [
@@ -66,7 +70,7 @@ ROOT_URLCONF = 'productivitypal.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'template')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -87,12 +91,8 @@ WSGI_APPLICATION = 'productivitypal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',  # or 'django.db.backends.mysql' or 'sqlite3'
-        'NAME': 'your_database_name',
-        'USER': 'your_database_user',
-        'PASSWORD': 'your_database_password',
-        'HOST': 'localhost',  # or database host
-        'PORT': '5432',  # PostgreSQL default is 5432, MySQL is 3306
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -130,9 +130,13 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=120),  # Extend to 2 hour
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),  # Extend to 7 days
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),  # Extend to 7 days
     'ROTATE_REFRESH_TOKENS': True,  
     'BLACKLIST_AFTER_ROTATION': True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": "your_secret_key",  # Make sure to use a secure secret key
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
 
@@ -162,21 +166,17 @@ STATIC_URL = 'static/'
 
 
 # Emailing
+
+# for testing
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.your-email-provider.com'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'your-email@example.com'
-# EMAIL_HOST_PASSWORD = 'your-email-password'
+# EMAIL_HOST_USER = os.getenv('EMAIL_USER')  
+# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')
 
-
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'  # Use your email provider
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.getenv('EMAIL_USER')  # Store in .env
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASSWORD')  # Store in .env
 
 
 # Default primary key field type
