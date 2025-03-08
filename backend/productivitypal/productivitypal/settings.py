@@ -139,6 +139,7 @@ SIMPLE_JWT = {
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
 }
 
+CORS_ALLOW_CREDENTIALS = True  
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
