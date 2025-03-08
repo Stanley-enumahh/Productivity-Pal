@@ -18,7 +18,7 @@ User = get_user_model()
 def endpoints(request):
     routes = [
         {
-            'Endpoint': '/api/sign-in/',
+            'Endpoint': '/api/login/',
             'method': 'POST',
             'description': 'Authenticates and logs in a user',
             'expected_data': ['username', 'password']
