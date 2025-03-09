@@ -2,8 +2,46 @@ import noProfile from "../assets/blank-profile-picture-973460_1280.png";
 import { TiWeatherSunny } from "react-icons/ti";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context.jsx/AuthContext";
+import { IoSearchOutline } from "react-icons/io5";
 
-export function TopBar({ profile, profileImg }) {
+export function MainBoard({ profile, profileImg }) {
+  return (
+    <div className="w-full bg-white h-full">
+      {/* <Topbar profile={profile} profileImg={profileImg} /> */}
+      <GreetingsDiv />
+    </div>
+  );
+}
+
+function GreetingsDiv() {
+  return (
+    <div className="w-full flex-col gap-2 p-4">
+      <div className="flex flex-row">
+        <span className="flex flex-col gap-2">
+          <p>
+            Hi,Isaiah <br /> how can we help you today
+          </p>
+        </span>
+        <SearchBar />
+      </div>
+    </div>
+  );
+}
+
+function SearchBar() {
+  return (
+    <div className="bg-[#F4F4F4] w-[400px] h-[44px] rounded-lg flex flex-row gap-2">
+      <IoSearchOutline />
+      <input
+        type="text"
+        placeholder="search tasks, projects, users"
+        className="border-none outline-none"
+      />
+    </div>
+  );
+}
+
+function Topbar({ profile, profileImg }) {
   const { user } = useContext(AuthContext);
   const [dark, setDark] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
@@ -27,7 +65,7 @@ export function TopBar({ profile, profileImg }) {
     [dark]
   );
   return (
-    <div className="w-full h-[70px] bg-red-200 dark:text-white flex flex-row justify-between">
+    <div className="w-full h-[70px] bg-white dark:text-white flex flex-row justify-between">
       <p className="mt-1">
         Welcome back{" "}
         <span className="font-bold  capitalize">

@@ -1,12 +1,15 @@
-import { useReducer, useState, useEffect } from "react";
+import { useReducer, useState, useEffect, useContext } from "react";
 import { Logo } from "./components/logo";
 import { SideNav } from "./components/sideNav";
-import { TopBar } from "./components/topBar";
+
 import { NoteUI } from "./components/notes";
 import { TodoUI } from "./components/todoUI";
 import { Setting } from "./components/AccountSetting";
 import { TaskUI } from "./components/taskUI";
 import { Overview } from "./components/overview";
+import { SlLogout } from "react-icons/sl";
+import { LastBoard } from "./components/lastBoard";
+import { AuthContext } from "./context.jsx/AuthContext";
 
 const initialState = {
   activeTab: "overview",
@@ -20,6 +23,7 @@ function activeTabReducer(state, action) {
 }
 
 export default function App() {
+  const { onLogout } = useContext(AuthContext);
   const [Activestate, disPatch] = useReducer(activeTabReducer, initialState);
   const activeTab = Activestate.activeTab;
   const [profile, setProfile] = useState(() => {
@@ -48,13 +52,18 @@ export default function App() {
   }, []);
 
   return (
-    <div className="w-full flex h-screen overflow-hidden bg-[#edf7f6] dark:bg-[#262730]  flex-row justify-between items-center transition-all duration-200">
-      <div className="flex flex-col items-center px-6 border-r-2 transition-all duration-200 dark:border-none border-gray-300 py-7 gap-16 w-[15%] h-full ">
+    <div className="w-full flex h-screen overflow-hidden bg-[#F6F6F6] dark:bg-[#262730]  flex-row justify-between items-center transition-all duration-200">
+      <div className="flex flex-col px-6 transition-all duration-200 bg-white py-7 gap-16 w-[250px] h-full ">
         <Logo />
         <SideNav disPatch={disPatch} activeTab={activeTab} />
+        <button
+          onClick={onLogout}
+          className="cursor-pointer flex flex-row gap-2 mt-4 pl-2 items-center text-sm text-red-500"
+        >
+          <SlLogout size={20} /> logout
+        </button>
       </div>
-      <div className="w-[85%] py-7 px-8 h-full flex flex-col">
-        <TopBar profileImg={profileImg} profile={profile} />
+      <div className="w-[55%] py-7 px-8 h-full flex flex-col">
         {activeTab === "note" && <NoteUI />}
         {activeTab === "todo" && <TodoUI />}
         {activeTab === "setting" && (
@@ -77,6 +86,8 @@ export default function App() {
           />
         )}
       </div>
+
+      <LastBoard />
     </div>
   );
 }
