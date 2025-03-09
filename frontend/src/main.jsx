@@ -5,7 +5,7 @@ import SignUp from "./pages/SignUp.jsx";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
-import Login from "./pages/Login.jsx";
+import LoginPage from "./pages/login.jsx";
 
 function AppWrapper() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function AppWrapper() {
   return (
     <AuthProvider navigate={navigate}>
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/" element={<SignUp />} />
         <Route path="/app" element={<App />} />
       </Routes>

@@ -123,7 +123,7 @@ export function SignUpForm() {
 
       <span className="flex flex-row gap-1 items-center w-full justify-center text-xs">
         <p>Already have an account?</p>
-        <Link className="text-blue" to="/">
+        <Link className="text-blue" to="/login">
           Login
         </Link>
       </span>

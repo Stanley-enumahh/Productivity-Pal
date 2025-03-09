@@ -20,7 +20,7 @@ export function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-[90%] md:w-[68%] flex flex-col gap-5"
+      className="w-[90%] md:w-[70%] flex flex-col gap-5"
     >
       <div className="flex flex-col gap-2">
         <label className="text-sm" htmlFor="username">
@@ -64,13 +64,15 @@ export function LoginForm() {
           <input
             type="checkbox"
             name=""
-            id=""
+            id="rememberMe"
             checked={rememberMe}
             onChange={() => setRememberMe(!rememberMe)}
           />
-          <p>remember me</p>
+          <label htmlFor="rememberMe" className="text-sm">
+            remember me
+          </label>
         </span>
-        <a href="" className="text-blue">
+        <a href="" className="text-blue text-sm">
           Forgot password?
         </a>
       </div>

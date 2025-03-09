@@ -13,7 +13,7 @@ export default function SignUp() {
 function SignUpDiv() {
   return (
     <div className="w-full md:w-[50%] h-ful gap-6 md:gap-4 flex flex-col bg-white mt-[75px] md:mt-0 md:justify-center items-center">
-      <div className="w-[90%] md:w-[68%] flex flex-col gap-3 justify-center">
+      <div className="w-[90%] md:w-[70%] flex flex-col gap-3 justify-center">
         <h1 className="font-semibold text-[23px] ">
           Sign Up- <span className="text-blue ">Organize Tasks Faster</span>
         </h1>
