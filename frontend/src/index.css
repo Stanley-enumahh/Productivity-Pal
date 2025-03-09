@@ -7,3 +7,20 @@
 body {
   font-family: "Poppins", sans-serif;
 }
+
+:root {
+  --color-primary: #2563eb;
+  --color-secondary: #051841;
+
+  /* --color-accent: #facc15;  */
+}
+
+.text-blue {
+  color: var(--color-primary);
+}
+.bg-blue {
+  background-color: var(--color-primary);
+}
+.bg-deep-blue {
+  background-color: var(--color-secondary);
+}

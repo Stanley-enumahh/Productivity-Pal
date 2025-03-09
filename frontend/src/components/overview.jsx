@@ -1,9 +1,8 @@
-import { IoFlagSharp } from "react-icons/io5";
-import avatarF from "../assets/ei_1740419592412-removebg-preview.png";
 import avatarM from "../assets/ei_1740419755317-removebg-preview.png";
-import { Flex, Progress } from "antd";
-import { useEffect, useState } from "react";
+import { Progress } from "antd";
+import { useContext, useEffect, useState } from "react";
 import { Activities } from "./activities";
+import { AuthContext } from "../context.jsx/AuthContext";
 
 const quotes = [
   "Let's get some work done!",
@@ -13,6 +12,7 @@ const quotes = [
 ];
 
 export function Overview({ taskArray, profile }) {
+  const { user } = useContext(AuthContext);
   const [count, setCount] = useState(0);
   const [activityArray, setActivityArray] = useState(() => {
     const savedActivities = localStorage.getItem("activities");
