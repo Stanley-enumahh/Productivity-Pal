@@ -91,7 +91,7 @@ export function LoginForm() {
 
       <span className="flex flex-row gap-1 items-center w-full justify-center text-xs">
         <p>Don't have an account?</p>
-        <Link className="text-blue" to="/">
+        <Link className="text-blue" to="/signup">
           Sign up
         </Link>
       </span>
