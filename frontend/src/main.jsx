@@ -14,7 +14,7 @@ function AppWrapper() {
     <AuthProvider navigate={navigate}>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/" element={<SignUp />} />
         <Route path="/app" element={<App />} />
       </Routes>
     </AuthProvider>
