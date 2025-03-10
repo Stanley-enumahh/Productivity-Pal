@@ -53,17 +53,20 @@ export default function App() {
 
   return (
     <div className="w-full flex h-screen overflow-hidden bg-[#F6F6F6] dark:bg-[#262730]  flex-row justify-between items-center transition-all duration-200">
-      <div className="flex flex-col px-6 transition-all duration-200 bg-white py-7 gap-16 w-[250px] h-full ">
+      <div
+        className="flex flex-col px-6 transition-all duration-200 bg-white 
+      gap-8 w-[250px] h-full "
+      >
         <Logo />
         <SideNav disPatch={disPatch} activeTab={activeTab} />
         <button
           onClick={onLogout}
-          className="cursor-pointer flex flex-row gap-2 mt-4 pl-2 items-center text-sm text-red-500"
+          className="cursor-pointer flex flex-row gap-2 mt-16 pl-2 items-center text-sm text-red-500"
         >
           <SlLogout size={20} /> logout
         </button>
       </div>
-      <div className="w-[55%] py-7 px-8 h-full flex flex-col">
+      <div className="w-[55%] px-8 h-full flex flex-col">
         {activeTab === "note" && <NoteUI />}
         {activeTab === "todo" && <TodoUI />}
         {activeTab === "setting" && (

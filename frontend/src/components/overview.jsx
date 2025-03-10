@@ -3,6 +3,7 @@ import { Progress } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Activities } from "./activities";
 import { AuthContext } from "../context.jsx/AuthContext";
+import { MainBoard } from "./MainBoard";
 
 const quotes = [
   "Let's get some work done!",
@@ -33,27 +34,7 @@ export function Overview({ taskArray, profile }) {
   const displayedArray = taskArray.length > 3 ? taskArray.slice(-3) : taskArray;
   return (
     <div className="w-full flex flex-row">
-      <div className="flex flex-col gap-5 w-full">
-        <Greetings count={count} profile={profile} />
-        <h2 className="font-semibold  transition-all duration-200 dark:text-white tet-xl">
-          Recent Tasks
-        </h2>
-        <div className="flex flex-row justify-between w-full gap-5">
-          {displayedArray.length < 1 ? (
-            <div className="w-full flex justify-center items-center">
-              <p className="text-gray-600 font-bold">
-                Add tasks to access recent tasks
-              </p>
-            </div>
-          ) : (
-            <RecentTaskDisplay displayedArray={displayedArray} />
-          )}
-          <Activities
-            activityArray={activityArray}
-            setActivityArray={setActivityArray}
-          />
-        </div>
-      </div>
+      <MainBoard />
     </div>
   );
 }

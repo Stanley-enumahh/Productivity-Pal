@@ -7,9 +7,8 @@ import { useContext } from "react";
 import { AuthContext } from "../context.jsx/AuthContext";
 
 export function SideNav({ disPatch, activeTab }) {
-  const { onLogout } = useContext(AuthContext);
   return (
-    <div className="flex flex-col text-sm gap-6 items-start w-full">
+    <div className="flex flex-col text-sm gap-5 items-start w-full">
       <button
         onClick={() =>
           disPatch({ type: "SET_ACTIVE_TAB", payLoad: "overview" })

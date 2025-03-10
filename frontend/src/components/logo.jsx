@@ -1,3 +1,5 @@
 export function Logo() {
-  return <h1 className="font-bold text-lg dark:text-white">ProductivityPal</h1>;
+  return (
+    <h1 className="font-bold text-lg dark:text-white py-7">ProductivityPal</h1>
+  );
 }

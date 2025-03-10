@@ -24,3 +24,7 @@ body {
 .bg-deep-blue {
   background-color: var(--color-secondary);
 }
+
+.button {
+  box-shadow: 0px 0px 15px #2563eb1a;
+}
