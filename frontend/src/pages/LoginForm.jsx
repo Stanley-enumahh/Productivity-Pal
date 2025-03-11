@@ -72,9 +72,10 @@ export function LoginForm() {
             remember me
           </label>
         </span>
-        <a href="" className="text-blue text-sm">
+
+        <Link to="/resetPassord " className="text-blue text-sm">
           Forgot password?
-        </a>
+        </Link>
       </div>
 
       {errorMessage && <p className="text-red-500 text-xs">{errorMessage}</p>}

@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 function AuthProvider({ children, navigate }) {
   const [errorMessage, setErrorMessage] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -15,6 +16,27 @@ function AuthProvider({ children, navigate }) {
   useEffect(() => {
     localStorage.setItem("rememberMe", rememberMe);
   }, [rememberMe]);
+
+  const checkAuth = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/api/auth/check/",
+        {
+          withCredentials: true, // Ensures cookies are sent
+        }
+      );
+
+      if (response.status === 200) {
+        setIsAuthenticated(true);
+      }
+    } catch (error) {
+      setIsAuthenticated(false);
+    }
+  };
+
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const setTokens = (token) => {
     setAccessToken(token);
@@ -31,7 +53,7 @@ function AuthProvider({ children, navigate }) {
       const { access_token, ...userData } = response.data;
       setUser(userData);
       setTokens(access_token);
-      navigate("/App"); // Redirect after successful signup
+      navigate("/app"); // Redirect after successful signup
     } catch (error) {
       console.error("Signup error:", error.response?.data || error);
       setErrorMessage(
@@ -54,7 +76,7 @@ function AuthProvider({ children, navigate }) {
       const { access_token, ...userData } = response.data;
       setUser(userData);
       setTokens(access_token);
-      navigate("/App"); // Redirect after successful login
+      navigate("/app"); // Redirect after successful login
     } catch (error) {
       console.error("Login error:", error.response?.data || error);
       setErrorMessage(

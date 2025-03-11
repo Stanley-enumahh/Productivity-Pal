@@ -103,9 +103,6 @@ export function SignUpForm() {
           />
           <p>remember me</p>
         </span>
-        <a href="" className="text-blue">
-          Forgot password?
-        </a>
       </div>
 
       {errors.root && (

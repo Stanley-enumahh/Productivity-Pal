@@ -21,6 +21,7 @@ export function MainBoard({ profile, profileImg }) {
 }
 
 function GreetingsDiv() {
+  const { user } = useContext(AuthContext);
   return (
     <div className="w-full relative flex-col flex gap-2 py-4 px-7 overflow-hidden bg-white h-[184px] justify-between">
       <span className="border-[#2563EB4D] border-2 z-10 top-[-208px] w-[300px] h-[300px] rounded-full absolute left-[-100px]"></span>
@@ -29,7 +30,7 @@ function GreetingsDiv() {
         <span className="flex flex-row gap-3">
           <img src={hand} alt="" className="w-[22px] object-cover h-[22px]" />
           <span className="text-sm text-start flex flex-col gap-1">
-            <p> Hi Isaiah</p>
+            <p className="capitalize">Hi Isaish</p>
             <p className="text-[#3E3E3E] text-[10px]">
               how can we help you today
             </p>
