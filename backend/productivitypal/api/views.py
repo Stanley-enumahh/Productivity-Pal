@@ -125,15 +125,12 @@ def request_password_reset(request):
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def password_reset_confirm(request, uidb64, token):
-    print(token)
     try:
         uid = urlsafe_base64_decode(uidb64).decode()
         user = User.objects.get(pk=uid)
-        print(user)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
 
-    print(default_token_generator.check_token(user, token))
     if user is not None and default_token_generator.check_token(user, token):
         new_password = request.data.get('new_password')
         confirm_password = request.data.get('confirm_password')
