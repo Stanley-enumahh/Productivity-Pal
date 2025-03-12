@@ -3,6 +3,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+import os
 
 User = get_user_model()
 
@@ -54,7 +55,7 @@ class PasswordResetSerializer(serializers.Serializer):
             form.save(
                 request=request,
                 use_https=request.is_secure(),
-                from_email=None,
+                from_email=os.environ.get('EMAIL_USER'),
                 email_template_name='emails/password_reset_email.html',
                 subject_template_name='emails/password_reset_subject.txt'
             )
