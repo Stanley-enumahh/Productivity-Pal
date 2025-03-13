@@ -1,18 +1,18 @@
 import noProfile from "../assets/blank-profile-picture-973460_1280.png";
 import { TiWeatherSunny } from "react-icons/ti";
 import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "../context.jsx/AuthContext";
+// import { AuthContext } from "../context.jsx/AuthContext";
 import { IoSearchOutline } from "react-icons/io5";
 import illustration from "../assets/4889345-removebg-preview.png";
 import hand from "../assets/noto_waving-hand.png";
 import { MileStone } from "./mileStone";
 import { CiSquarePlus } from "react-icons/ci";
 import emptyTask from "../assets/add-files-concept-illustration 1.png";
+import { useAuth } from "../context.jsx/AuthContext";
 
-export function MainBoard({ profile, profileImg }) {
+export function MainBoard() {
   return (
     <div className="w-full h-full flex flex-col gap-5">
-      {/* <Topbar profile={profile} profileImg={profileImg} /> */}
       <GreetingsDiv />
       <SecondDivInMainBoard />
       <RecentTasks />
@@ -21,7 +21,8 @@ export function MainBoard({ profile, profileImg }) {
 }
 
 function GreetingsDiv() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
+  // console.log(user);
   return (
     <div className="w-full relative flex-col flex gap-2 py-4 px-7 overflow-hidden bg-white h-[184px] justify-between">
       <span className="border-[#2563EB4D] border-2 z-10 top-[-208px] w-[300px] h-[300px] rounded-full absolute left-[-100px]"></span>
@@ -30,7 +31,7 @@ function GreetingsDiv() {
         <span className="flex flex-row gap-3">
           <img src={hand} alt="" className="w-[22px] object-cover h-[22px]" />
           <span className="text-sm text-start flex flex-col gap-1">
-            <p className="capitalize">Hi Isaish</p>
+            {/* <p className="capitalize">{user.username  || "Hi Isaish"} </p> */}
             <p className="text-[#3E3E3E] text-[10px]">
               how can we help you today
             </p>

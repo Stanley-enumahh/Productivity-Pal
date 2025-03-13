@@ -2,7 +2,7 @@ import avatarM from "../assets/ei_1740419755317-removebg-preview.png";
 import { Progress } from "antd";
 import { useContext, useEffect, useState } from "react";
 import { Activities } from "./activities";
-import { AuthContext } from "../context.jsx/AuthContext";
+// import { AuthContext } from "../context.jsx/AuthContext";
 import { MainBoard } from "./MainBoard";
 
 const quotes = [
@@ -13,7 +13,7 @@ const quotes = [
 ];
 
 export function Overview({ taskArray, profile }) {
-  const { user } = useContext(AuthContext);
+  // const { user } = useContext(AuthContext);
   const [count, setCount] = useState(0);
   const [activityArray, setActivityArray] = useState(() => {
     const savedActivities = localStorage.getItem("activities");

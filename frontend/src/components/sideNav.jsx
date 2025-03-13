@@ -4,7 +4,6 @@ import { TfiWrite } from "react-icons/tfi";
 import { IoLogoAppleAr } from "react-icons/io5";
 import { IoIosSettings } from "react-icons/io";
 import { useContext } from "react";
-import { AuthContext } from "../context.jsx/AuthContext";
 
 export function SideNav({ disPatch, activeTab }) {
   return (

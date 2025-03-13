@@ -5,22 +5,31 @@ import SignUp from "./pages/SignUp.jsx";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
-import LoginPage from "./pages/login.jsx";
-import PrivateRoute from "./components/privateRoute.jsx";
-import { ResetPasswordPage } from "./pages/forgetPassord.jsx";
+import LoginPage from "./pages/Login.jsx";
+// import PrivateRoute from "./components/PrivateRoute.jsx";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+// Create a React Query client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+    mutations: {
+      onError: (error) => {
+        console.error("Mutation error:", error);
+      },
+    },
+  },
+});
 
 function AppWrapper() {
-  const navigate = useNavigate();
-
   return (
-    <AuthProvider navigate={navigate}>
+    <AuthProvider>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/resetPassord" element={<ResetPasswordPage />} />
         <Route path="/signup" element={<SignUp />} />
-        {/* <Route element={<PrivateRoute />}> */}
         <Route path="/" element={<App />} />
-        {/* </Route> */}
       </Routes>
     </AuthProvider>
   );
@@ -28,10 +37,10 @@ function AppWrapper() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <AuthProvider>
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AppWrapper />
       </BrowserRouter>
-    </AuthProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

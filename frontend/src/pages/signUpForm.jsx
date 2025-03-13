@@ -1,35 +1,23 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../context.jsx/AuthContext";
+import { useAuth } from "../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 export function SignUpForm() {
-  const { onSignup, isLoading, rememberMe, setRememberMe } =
-    useContext(AuthContext);
+  const { signupMutation } = useAuth();
 
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    await onSignup(data, (errorResponse) => {
-      if (errorResponse.username) {
-        setError("username", {
-          type: "server",
-          message: errorResponse.username,
-        });
-      }
-      if (errorResponse.email) {
-        setError("email", { type: "server", message: errorResponse.email });
-      }
-      if (errorResponse.detail) {
-        setError("root", { type: "server", message: errorResponse.detail });
-      }
-    });
+  const onSubmit = (formData) => {
+    signupMutation.mutate(formData);
   };
+  // if (signupMutation.error?.response?.data.username) {
+  //   console.log(signupMutation.error.response.data.username);
+  // }
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -98,8 +86,8 @@ export function SignUpForm() {
             type="checkbox"
             name=""
             id=""
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
+            // checked={rememberMe}
+            // onChange={() => setRememberMe(!rememberMe)}
           />
           <p>remember me</p>
         </span>
@@ -110,13 +98,22 @@ export function SignUpForm() {
       )}
       <button
         type="submit"
-        disabled={isLoading}
-        className={`bg-blue text-white py-3 ${
-          isLoading && "opacity-75"
-        } rounded-xl w-full`}
+        disabled={signupMutation.isLoading}
+        className="bg-blue text-white py-3 rounded-xl w-full cursor-pointer"
       >
-        {isLoading ? "Signing up" : " Sign Up"}
+        {signupMutation.isLoading ? "Signing up" : " Sign Up"}
       </button>
+
+      {signupMutation?.isError && (
+        <div>
+          <p className="text-xs text-red-500">
+            {signupMutation.error.response?.data?.username
+              ? signupMutation.error.response.data.username
+              : signupMutation.error.response?.data?.email &&
+                signupMutation.error.response.data.email}
+          </p>
+        </div>
+      )}
 
       <span className="flex flex-row gap-1 items-center w-full justify-center text-xs">
         <p>Already have an account?</p>

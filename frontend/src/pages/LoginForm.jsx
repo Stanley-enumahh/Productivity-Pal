@@ -1,11 +1,10 @@
 import { useContext, useState } from "react";
-import { AuthContext } from "../context.jsx/AuthContext";
+import { useAuth } from "../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 
 export function LoginForm() {
-  const { isLoading, onLogin, rememberMe, setRememberMe, errorMessage } =
-    useContext(AuthContext);
+  const { loginMutation } = useAuth();
 
   const {
     register,
@@ -13,8 +12,8 @@ export function LoginForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    await onLogin(data);
+  const onSubmit = (data) => {
+    loginMutation.mutate(data);
   };
 
   return (
@@ -65,8 +64,8 @@ export function LoginForm() {
             type="checkbox"
             name=""
             id="rememberMe"
-            checked={rememberMe}
-            onChange={() => setRememberMe(!rememberMe)}
+            // checked={rememberMe}
+            // onChange={() => setRememberMe(!rememberMe)}
           />
           <label htmlFor="rememberMe" className="text-sm">
             remember me
@@ -78,16 +77,22 @@ export function LoginForm() {
         </Link>
       </div>
 
-      {errorMessage && <p className="text-red-500 text-xs">{errorMessage}</p>}
+      {loginMutation?.isError && (
+        <div className="w-full">
+          <p className="text-xs text-red-500">
+            {loginMutation.error.response?.data?.message ||
+              "invalid credentials"}
+          </p>
+        </div>
+      )}
 
       <button
         type="submit"
-        disabled={isLoading}
-        className={`bg-blue text-white md:py-3 py-3 ${
-          isLoading && "opacity-75"
-        } rounded-xl w-full`}
+        disabled={loginMutation.isLoading}
+        className="bg-blue text-white md:py-3 py-3 isLoading && opacity-75
+         rounded-xl w-full cursor-pointer"
       >
-        {isLoading ? "Loging in" : " Login"}
+        {loginMutation.isLoading ? "Loging in" : " Login"}
       </button>
 
       <span className="flex flex-row gap-1 items-center w-full justify-center text-xs">
