@@ -6,10 +6,10 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
 import LoginPage from "./pages/Login.jsx";
+import { ResetPassword } from "./pages/resetPassword.jsx";
 // import PrivateRoute from "./components/PrivateRoute.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Create a React Query client
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -30,6 +30,7 @@ function AppWrapper() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<App />} />
+        <Route path="/resetPassword" element={<ResetPassword />} />
       </Routes>
     </AuthProvider>
   );

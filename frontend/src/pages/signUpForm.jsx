@@ -91,6 +91,10 @@ export function SignUpForm() {
           />
           <p>remember me</p>
         </span>
+
+        <Link to="/resetPassword" className="text-blue text-sm">
+          Forgot password?
+        </Link>
       </div>
 
       {errors.root && (

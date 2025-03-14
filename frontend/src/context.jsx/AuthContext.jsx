@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { login, signup, logout, getProfile } from "../components/Auth";
 import { useNavigate } from "react-router";
@@ -17,7 +17,7 @@ export const AuthProvider = ({ children }) => {
   } = useQuery({
     queryKey: ["user"],
     queryFn: getProfile,
-    retry: false, // don't retry if the user is not authenticated
+    retry: false,
   });
 
   // Signup mutation: On success, update the user and navigate to dashboard.

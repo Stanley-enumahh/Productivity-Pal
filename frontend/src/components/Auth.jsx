@@ -68,8 +68,42 @@ export const logout = async () => {
   }
 };
 
-// Get Profile: Retrieves the authenticated user's profile.
 export const getProfile = async () => {
   const response = await api.get("/profile/");
   return response.data;
+};
+
+// ✅ Add Forgot Password Function
+export const requestPasswordReset = async (email) => {
+  try {
+    const response = await api.post("/password-reset/", { email });
+
+    console.log("Password reset email sent:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Password reset failed:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+// ✅ Add Reset Password Function (for setting a new password)
+export const resetPassword = async (token, newPassword) => {
+  try {
+    const response = await api.post("/password-reset/confirm/", {
+      token,
+      password: newPassword,
+    });
+
+    console.log("Password successfully reset:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Password reset confirmation failed:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 };

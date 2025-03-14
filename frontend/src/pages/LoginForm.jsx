@@ -1,4 +1,3 @@
-import { useContext, useState } from "react";
 import { useAuth } from "../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
@@ -72,7 +71,7 @@ export function LoginForm() {
           </label>
         </span>
 
-        <Link to="/resetPassord " className="text-blue text-sm">
+        <Link to="/resetPassword" className="text-blue text-sm">
           Forgot password?
         </Link>
       </div>
@@ -89,7 +88,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={loginMutation.isLoading}
-        className="bg-blue text-white md:py-3 py-3 isLoading && opacity-75
+        className="bg-blue text-white py-3
          rounded-xl w-full cursor-pointer"
       >
         {loginMutation.isLoading ? "Loging in" : " Login"}
