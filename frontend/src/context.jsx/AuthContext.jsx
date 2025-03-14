@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { login, signup, logout, getProfile } from "../components/Auth";
 import { useNavigate } from "react-router";
