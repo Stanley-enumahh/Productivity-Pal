@@ -78,7 +78,7 @@ export const requestPasswordReset = async (email) => {
   try {
     const response = await api.post("/password-reset/", { email });
 
-    console.log("Password reset email sent:", response.data);
+    console.log("Password reset email sent:", response);
     return response.data;
   } catch (error) {
     console.error(
