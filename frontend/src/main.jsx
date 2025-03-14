@@ -9,6 +9,7 @@ import LoginPage from "./pages/Login.jsx";
 import { ResetPassword } from "./pages/resetPassword.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+// query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
