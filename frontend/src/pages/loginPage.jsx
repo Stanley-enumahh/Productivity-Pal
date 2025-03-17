@@ -1,8 +1,8 @@
-import { LoginForm } from "./LoginForm";
 import illustration from "../assets/20944361 1.png";
 import googleIcon from "../assets/devicon_google.png";
+import { LoginForm } from "./LoginForm";
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <div className="flex flex-row w-full h-screen">
       <div className="flex flex-col gap-6 bg-deep-blue w-[50%] h-full items-center justify-center">
