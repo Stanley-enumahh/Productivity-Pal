@@ -5,7 +5,7 @@ import SignUp from "../src/pages/SignUp.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
-import LoginPage from "../src/pages/Login.jsx";
+import LoginPage from "./pages/Login.jsx";
 import { ResetPassword } from "./pages/resetPassword.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
