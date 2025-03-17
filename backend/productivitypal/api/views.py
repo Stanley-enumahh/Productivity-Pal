@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, PasswordResetSerializer
+from .serializers import RegisterSerializer, PasswordResetSerializer, UserProfileInfoSerializer
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model
@@ -48,6 +48,12 @@ def endpoints(request):
             'description': 'Confirm password request and sets the new password for the user',
             'expected_data': ['new_password', 'confirm_password'],
             'url_parameters': ['uidb64', 'token']
+        },
+        {
+            'Endpoint': 'api/get-profile-info/',
+            'method': 'GET',
+            'description': 'Confirm if a user is registered and returns the profile information of that user',
+            'expected_data': ['username'],
         },
     ]
 
@@ -146,3 +152,17 @@ def password_reset_confirm(request, uidb64, token):
         return Response({"message": "Password has been reset successfully"}, status=status.HTTP_200_OK)
     else:
         return Response({"error": "Invalid token or user"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# get profile info
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_profile_info(request):
+    try:
+        username = request.data.get('username')
+        user = User.objects.get(username=username)
+    except User.DoesNotExist:
+        return Response({'error': "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UserProfileInfoSerializer(user)
+    return Response(serializer.data)
