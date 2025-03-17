@@ -44,7 +44,7 @@ export const AuthProvider = ({ children }) => {
     },
   });
 
-  // Logout mutation: On success, clear user data and navigate to login.
+  // Logout mutation: On success, clear user data n navigate to login.
   const logoutMutation = useMutation({
     mutationFn: logout,
     onSuccess: () => {
