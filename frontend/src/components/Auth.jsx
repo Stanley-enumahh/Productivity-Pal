@@ -69,8 +69,11 @@ export const logout = async () => {
 };
 
 export const getProfile = async () => {
-  const response = await api.get("/profile/");
-  return response.data;
+  const response = await api.get("/get-profile-info/");
+  if (!response.ok) {
+    throw new Error("Failed to fetch profile");
+  }
+  return response.json();
 };
 
 // ✅ Add Forgot Password Function

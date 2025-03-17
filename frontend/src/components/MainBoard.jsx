@@ -31,7 +31,7 @@ function GreetingsDiv() {
         <span className="flex flex-row gap-3">
           <img src={hand} alt="" className="w-[22px] object-cover h-[22px]" />
           <span className="text-sm text-start flex flex-col gap-1">
-            {/* <p className="capitalize">{user.username  || "Hi Isaish"} </p> */}
+            <p className="capitalize">{user.username || ""} </p>
             <p className="text-[#3E3E3E] text-[10px]">
               how can we help you today
             </p>

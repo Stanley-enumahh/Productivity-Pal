@@ -15,9 +15,7 @@ export function SignUpForm() {
   const onSubmit = (formData) => {
     signupMutation.mutate(formData);
   };
-  // if (signupMutation.error?.response?.data.username) {
-  //   console.log(signupMutation.error.response.data.username);
-  // }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
