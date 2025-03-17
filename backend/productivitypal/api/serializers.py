@@ -59,3 +59,13 @@ class PasswordResetSerializer(serializers.Serializer):
                 email_template_name='emails/password_reset_email.html',
                 subject_template_name='emails/password_reset_subject.txt'
             )
+
+class UserProfileInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'last_login',
+            'date_joined'
+        ]
