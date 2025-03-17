@@ -5,7 +5,7 @@ import SignUp from "../src/pages/SignUp.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
-import LoginPage from "./pages/Login.jsx";
+import Login from "./pages/Login.jsx";
 import { ResetPassword } from "./pages/resetPassword.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
@@ -27,7 +27,7 @@ function AppWrapper() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/" element={<App />} />
         <Route path="/resetPassword" element={<ResetPassword />} />
