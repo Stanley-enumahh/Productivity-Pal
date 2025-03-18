@@ -2,7 +2,7 @@ import api from "../utils/api";
 
 export const signup = async (userData) => {
   try {
-    const response = await api.post("/register/", userData, {
+    const response = await api.post("/api/register/", userData, {
       withCredentials: true,
     });
 
@@ -20,7 +20,7 @@ export const signup = async (userData) => {
 
 export const login = async (credentials) => {
   try {
-    const response = await api.post("/login/", credentials, {
+    const response = await api.post("/api/login/", credentials, {
       withCredentials: true,
     });
 
@@ -68,13 +68,14 @@ export const logout = async () => {
   }
 };
 
-export const getProfile = async () => {
-  const response = await api.get("/get-profile-info/");
-  if (!response.ok) {
-    throw new Error("Failed to fetch profile");
-  }
-  return response.json();
-};
+// export const getProfile = async () => {
+//   const response = await api.get("/api/get-profile-info/");
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch profile");
+//   }
+//   console.log(response.data);
+//   return response.data;
+// };
 
 // ✅ Add Forgot Password Function
 export const requestPasswordReset = async (email) => {

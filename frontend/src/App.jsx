@@ -23,7 +23,7 @@ function activeTabReducer(state, action) {
 }
 
 export default function App() {
-  const { logoutMutation } = useAuth();
+  const { logout } = useAuth();
   const [Activestate, disPatch] = useReducer(activeTabReducer, initialState);
   const activeTab = Activestate.activeTab;
   const [profile, setProfile] = useState(() => {
@@ -60,7 +60,7 @@ export default function App() {
         <Logo />
         <SideNav disPatch={disPatch} activeTab={activeTab} />
         <button
-          onClick={() => logoutMutation.mutate()}
+          onClick={logout}
           className="cursor-pointer flex flex-row gap-2 mt-16 pl-2 items-center text-sm text-red-500"
         >
           <SlLogout size={20} /> logout

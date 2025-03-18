@@ -1,70 +1,114 @@
-import { createContext, useContext } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { login, signup, logout, getProfile } from "../components/Auth";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import api from "../utils/api";
+import Cookies from "js-cookie";
+import { setAuthToken } from "../utils/api";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [accessToken, setAccessToken] = useState(
+    localStorage.getItem("accessToken") || null
+  );
+  const [user, setUser] = useState(null);
+  const [userName, setUserName] = useState(null);
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
 
-  // Fetch the authenticated user's profile
-  const {
-    data: user,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["user"],
-    queryFn: getProfile,
-    retry: false,
-  });
+  useEffect(() => {
+    setAuthToken(accessToken);
+  }, [accessToken]);
 
-  // Signup mutation: On success, update the user and navigate to dashboard.
-  const signupMutation = useMutation({
-    mutationFn: signup,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+  // Signup function
+  const signup = async (username, email, password) => {
+    try {
+      const response = await api.post("/api/register/", {
+        username,
+        email,
+        password,
+      });
+      if (response.status === 201) {
+        const token = response.data.access_token;
+        setAccessToken(token);
+        return true;
+      }
+    } catch (error) {
+      console.error("Registration error:", error);
+      throw error;
+    }
+  };
+
+  // Login function
+  const login = async (username, password, rememberMe) => {
+    try {
+      const response = await api.post("/api/login/", {
+        username,
+        password,
+      });
+
+      if (response.status === 200) {
+        const token = response.data.access_token;
+        setAccessToken(token);
+        setUser(username);
+        navigate("/app");
+        if (rememberMe) {
+          localStorage.setItem("accessToken", token);
+        } else {
+          sessionStorage.setItem("accessToken", token);
+        }
+
+        setAccessToken(token);
+      }
+    } catch (error) {
+      console.error("Login failed:", error.response?.data);
+      throw new Error(error.response?.data?.error || "Login failed");
+    }
+  };
+
+  // Logout function
+  const logout = async () => {
+    try {
+      if (accessToken) {
+        await api.post(
+          "/api/logout/",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          }
+        );
+      }
+
+      localStorage.removeItem("accessToken");
+      sessionStorage.removeItem("accessToken");
+
+      setAccessToken(null);
+      setUser(null);
       navigate("/");
-    },
-    onError: (error) => {
-      console.error("Signup failed:", error);
-    },
-  });
+    } catch (error) {
+      console.error("Logout failed:", error.response?.data || error.message);
 
-  // Login mutation: On success, update the user and navigate to dashboard.
-  const loginMutation = useMutation({
-    mutationFn: login,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      localStorage.removeItem("accessToken");
+      sessionStorage.removeItem("accessToken");
+      setAccessToken(null);
+      setUser(null);
+
       navigate("/");
-    },
-    onError: (error) => {
-      console.error("Login failed:", error);
-    },
-  });
 
-  // Logout mutation: On success, clear user data n navigate to login.
-  const logoutMutation = useMutation({
-    mutationFn: logout,
-    onSuccess: () => {
-      queryClient.setQueryData(["user"], null);
-      navigate("/login");
-    },
-    onError: (error) => {
-      console.error("Logout failed:", error);
-    },
-  });
+      throw new Error(error.response?.data || "Logout failed");
+    }
+  };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        isLoading,
-        isError,
-        loginMutation,
-        signupMutation,
-        logoutMutation,
+        signup,
+        login,
+        logout,
+        userName,
+        accessToken,
+        setAccessToken,
       }}
     >
       {children}

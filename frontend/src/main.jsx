@@ -7,29 +7,18 @@ import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
 import LoginPage from "./pages/loginPage.jsx";
 import { ResetPassword } from "./pages/resetPassword.jsx";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-// query
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-    },
-    mutations: {
-      onError: (error) => {
-        console.error("Mutation error:", error);
-      },
-    },
-  },
-});
+import { ProtectedRoute } from "./components/protectedRoute.jsx";
 
 function AppWrapper() {
   return (
     <AuthProvider>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
+        {/* <Route element={<ProtectedRoute />}> */}
+        <Route path="/app" element={<App />} />
+        {/* </Route> */}
+        <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={<App />} />
+
         <Route path="/resetPassword" element={<ResetPassword />} />
       </Routes>
     </AuthProvider>
@@ -38,10 +27,8 @@ function AppWrapper() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <AppWrapper />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <BrowserRouter>
+      <AppWrapper />
+    </BrowserRouter>
   </React.StrictMode>
 );

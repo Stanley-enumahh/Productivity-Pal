@@ -1,10 +1,13 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 export function SignUpForm() {
-  const { signupMutation } = useAuth();
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -12,8 +15,17 @@ export function SignUpForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (formData) => {
-    signupMutation.mutate(formData);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      await signup(data.username, data.email, data.password);
+      alert("Signup successful!");
+      navigate("/app");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -47,7 +59,13 @@ export function SignUpForm() {
           type="email"
           name=""
           id="email"
-          {...register("email", { required: "email is required" })}
+          {...register("email", {
+            required: "email is required",
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "Enter a valid email address",
+            },
+          })}
           className="border border-[#CBD5E1] rounded-xl bg-[#F8FAFC] px-3 text-sm py-2 w-full outline-none"
           placeholder="enter your email"
         />
@@ -79,7 +97,7 @@ export function SignUpForm() {
       </div>
 
       <div className="flex flex-row w-full justify-between">
-        <span className="flex flex-row gap-2">
+        {/* <span className="flex flex-row gap-2">
           <input
             type="checkbox"
             name=""
@@ -88,7 +106,7 @@ export function SignUpForm() {
             // onChange={() => setRememberMe(!rememberMe)}
           />
           <p>remember me</p>
-        </span>
+        </span> */}
 
         <Link to="/resetPassword" className="text-blue text-sm">
           Forgot password?
@@ -100,13 +118,13 @@ export function SignUpForm() {
       )}
       <button
         type="submit"
-        disabled={signupMutation.isLoading}
+        disabled={isLoading}
         className="bg-blue text-white py-3 rounded-xl w-full cursor-pointer"
       >
-        {signupMutation.isLoading ? "Signing up" : " Sign Up"}
+        {isLoading ? "Signing Up" : " Sign Up"}
       </button>
 
-      {signupMutation?.isError && (
+      {/* {signupMutation?.isError && (
         <div>
           <p className="text-xs text-red-500">
             {signupMutation.error.response?.data?.username
@@ -115,11 +133,11 @@ export function SignUpForm() {
                 signupMutation.error.response.data.email}
           </p>
         </div>
-      )}
+      )} */}
 
       <span className="flex flex-row gap-1 items-center w-full justify-center text-xs">
         <p>Already have an account?</p>
-        <Link className="text-blue" to="/login">
+        <Link className="text-blue" to="/">
           Login
         </Link>
       </span>

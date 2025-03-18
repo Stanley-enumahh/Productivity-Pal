@@ -1,9 +1,13 @@
+import { useState } from "react";
 import { useAuth } from "../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
+import { useNavigate } from "react-router";
 
 export function LoginForm() {
-  const { loginMutation } = useAuth();
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -11,8 +15,17 @@ export function LoginForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    loginMutation.mutate(data);
+  const onSubmit = async (data) => {
+    try {
+      setIsLoading(true);
+      await login(data.username, data.password, data.rememberMe);
+
+      navigate("/app");
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -59,13 +72,7 @@ export function LoginForm() {
       </div>
       <div className="flex flex-row w-full justify-between">
         <span className="flex flex-row gap-2">
-          <input
-            type="checkbox"
-            name=""
-            id="rememberMe"
-            // checked={rememberMe}
-            // onChange={() => setRememberMe(!rememberMe)}
-          />
+          <input type="checkbox" {...register("rememberMe")} />
           <label htmlFor="rememberMe" className="text-sm">
             remember me
           </label>
@@ -76,22 +83,22 @@ export function LoginForm() {
         </Link>
       </div>
 
-      {loginMutation?.isError && (
+      {/* {loginMutation?.isError && (
         <div className="w-full">
           <p className="text-xs text-red-500">
             {loginMutation.error.response?.data?.message ||
               "invalid credentials"}
           </p>
         </div>
-      )}
+      )} */}
 
       <button
         type="submit"
-        disabled={loginMutation.isLoading}
+        disabled={isLoading}
         className="bg-blue text-white py-3
          rounded-xl w-full cursor-pointer"
       >
-        {loginMutation.isLoading ? "Loging in" : " Login"}
+        {isLoading ? "Logging in" : " Login"}
       </button>
 
       <span className="flex flex-row gap-1 items-center w-full justify-center text-xs">
