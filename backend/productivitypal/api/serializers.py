@@ -3,6 +3,7 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
+from .models import Note, Todo, TodoItem
 import os
 
 User = get_user_model()
@@ -69,3 +70,88 @@ class UserProfileInfoSerializer(serializers.ModelSerializer):
             'last_login',
             'date_joined'
         ]
+
+
+class NoteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = [
+            'id',
+            'title',
+            'content',
+            'date_created',
+            'last_updated'
+        ]
+        read_only_fields = ['id', 'date_created', 'last_updated']
+
+
+        def create(self, validated_data):
+            request = self.context.get('request')
+            validated_data['user'] = request.user  
+            return super().create(validated_data)
+        
+
+
+class TodoItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TodoItem
+        fields = [
+            'id',
+            'todo',
+            'title',
+            'completed'
+        ]
+
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    todoitems = TodoItemSerializer(many=True, required=False)
+    class Meta:
+        model = Todo
+        fields = [
+            'id',
+            'title',
+            'todoitems',
+            'date_created',
+            'due_date',
+            'completed'
+        ]
+        read_only_fields = ['date_created']
+
+    
+    def create(self, validated_data):
+        request = self.context.get('request')
+        validated_data['user'] = request.user  # Auto-assign the user
+
+        # Extract nested items
+        todo_items_data = validated_data.pop('todoitems', [])
+
+        # Create the Todo instance
+        todo = Todo.objects.create(**validated_data)
+
+        # Create the associated TodoItems
+        for item_data in todo_items_data:
+            TodoItem.objects.create(todo=todo, **item_data)
+        return todo
+    
+    
+    def update(self, instance, validated_data):
+        # Extract nested items data
+        items_data = validated_data.pop('todoitems', [])
+
+        # Update the Todo instance fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # Update or create TodoItem objects
+        instance.todoitems.all().delete()  # Delete existing items (optional, or handle updates differently)
+        for item_data in items_data:
+            TodoItem.objects.create(todo=instance, **item_data)
+
+        return instance
+
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+        response['todoitems'] = TodoItemSerializer(instance.todoitems.all(), many=True).data
+        return response
