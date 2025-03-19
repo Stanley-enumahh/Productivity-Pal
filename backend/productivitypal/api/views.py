@@ -78,20 +78,20 @@ def endpoints(request):
         {
             'Endpoint': 'api/todos/<id>/',
             'method': ['GET', 'PUT', 'PATCH', 'DELETE'],
-            'description': 'get the detail of a paticular note(id, title, content e.t.c), fully edit a particular note(title, content), edit a particular field of a note(title or content), delete a note',
-            'expected_data': ['title', 'content'],
+            'description': 'get the detail of a paticular todo(id, title, todoitems e.t.c), fully edit a particular todo(title, todoitems, due_date), edit a particular field of a note(title or due_date, todoitems), delete a todo',
+            'expected_data': ['title', 'todoitems', 'due_date'],
         },
         {
             'Endpoint': 'api/todoitems/?todo=<id>',
             'method': ['GET', 'POST'],
             'description': "get all todoitemss of a particular logged in user's specific todo, create a todoitem for a particular user's specific todo",
-            'expected_data': ['title', 'todoitems', 'due_date'],
+            'expected_data': ['title', 'todo', 'completed'],
         },
         {
             'Endpoint': 'api/todoitems/<id>/',
             'method': ['GET', 'PUT', 'PATCH', 'DELETE'],
             'description': 'get the detail of a paticular todoitem(id, todo, title e.t.c), fully edit a particular todoitem(title, todo, completed), edit a particular field of a note(title or completed), delete a todoitem',
-            'expected_data': ['title', 'content'],
+            'expected_data': ['title', 'todo', 'completed'],
         },
     ]
 
