@@ -7,19 +7,20 @@ import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
 import LoginPage from "./pages/loginPage.jsx";
 import { ResetPassword } from "./pages/resetPassword.jsx";
-import { ProtectedRoute } from "./components/protectedRoute.jsx";
+import ProtectedRoute from "./pages/protectedRoute.jsx";
 
 function AppWrapper() {
   return (
     <AuthProvider>
       <Routes>
-        {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/app" element={<App />} />
-        {/* </Route> */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/app" element={<App />} />
+        </Route>
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignUp />} />
 
         <Route path="/resetPassword" element={<ResetPassword />} />
+        <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
     </AuthProvider>
   );

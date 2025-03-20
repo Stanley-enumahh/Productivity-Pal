@@ -7,12 +7,22 @@ import { setAuthToken } from "../utils/api";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState(
     localStorage.getItem("accessToken") || null
   );
   const [user, setUser] = useState(null);
-  const [userName, setUserName] = useState(null);
+
   const navigate = useNavigate();
+
+  // isAuthenticated
+  useEffect(() => {
+    const localToken = localStorage.getItem("accessToken");
+    if (localToken) setIsAuthenticated(true);
+    else {
+      setIsAuthenticated(false);
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     setAuthToken(accessToken);
@@ -29,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       if (response.status === 201) {
         const token = response.data.access_token;
         setAccessToken(token);
+        setUser(username);
         return true;
       }
     } catch (error) {
@@ -106,9 +117,9 @@ export const AuthProvider = ({ children }) => {
         signup,
         login,
         logout,
-        userName,
         accessToken,
         setAccessToken,
+        isAuthenticated,
       }}
     >
       {children}
