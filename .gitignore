@@ -54,6 +54,9 @@ db.sqlite3
 
 # Migrations
 */migrations/*
+migrations
+migrations/
+.migrations/
 
 # Media
 media/
