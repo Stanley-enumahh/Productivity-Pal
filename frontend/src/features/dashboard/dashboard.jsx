@@ -1,9 +1,8 @@
-import avatarM from "../assets/ei_1740419755317-removebg-preview.png";
-import { Progress } from "antd";
 import { useContext, useEffect, useState } from "react";
-import { Activities } from "./activities";
-// import { AuthContext } from "../context.jsx/AuthContext";
-import { MainBoard } from "./MainBoard";
+
+import { Progress } from "antd";
+import { DashboardSidebar } from "./DashboardSibeBar";
+import { DashboardMain } from "./DashboardMain";
 
 const quotes = [
   "Let's get some work done!",
@@ -11,6 +10,17 @@ const quotes = [
   "Great men do not procasinate!",
   "The earlier, the better",
 ];
+
+export default function Dashboard() {
+  return (
+    <div className="w-full flex flex-row gap-4 h-full overflow-hidden">
+      <DashboardMain />
+      <DashboardSidebar />
+    </div>
+  );
+}
+
+// import { AuthContext } from "../context.jsx/AuthContext";
 
 export function Overview({ taskArray, profile }) {
   // const { user } = useContext(AuthContext);

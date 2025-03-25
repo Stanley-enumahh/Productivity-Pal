@@ -1,5 +1,5 @@
-import illustration from "../assets/20944361 1.png";
-import googleIcon from "../assets/devicon_google.png";
+import illustration from "../../assets/20944361 1.png";
+import googleIcon from "../../assets/devicon_google.png";
 import { LoginForm } from "./LoginForm";
 
 export default function LoginPage() {

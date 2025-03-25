@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAuth } from "../context.jsx/AuthContext";
+import { useAuth } from "../../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
 import { useNavigate } from "react-router";
@@ -19,8 +19,7 @@ export function SignUpForm() {
     try {
       setIsLoading(true);
       await signup(data.username, data.email, data.password);
-      alert("Signup successful!");
-      navigate("/app");
+      // navigate("/app");
     } catch (error) {
       alert(error.message);
     } finally {

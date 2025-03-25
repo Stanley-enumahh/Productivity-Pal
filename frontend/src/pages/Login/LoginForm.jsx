@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useAuth } from "../context.jsx/AuthContext";
+import { useAuth } from "../../context.jsx/AuthContext";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router";
-import { useNavigate } from "react-router";
 
 export function LoginForm() {
   const { login } = useAuth();
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -19,8 +17,6 @@ export function LoginForm() {
     try {
       setIsLoading(true);
       await login(data.username, data.password, data.rememberMe);
-
-      navigate("/app");
     } catch (error) {
       alert(error.message);
     } finally {
@@ -82,15 +78,6 @@ export function LoginForm() {
           Forgot password?
         </Link>
       </div>
-
-      {/* {loginMutation?.isError && (
-        <div className="w-full">
-          <p className="text-xs text-red-500">
-            {loginMutation.error.response?.data?.message ||
-              "invalid credentials"}
-          </p>
-        </div>
-      )} */}
 
       <button
         type="submit"

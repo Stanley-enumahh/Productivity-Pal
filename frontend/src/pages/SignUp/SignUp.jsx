@@ -1,5 +1,5 @@
-import googleIcon from "../assets/devicon_google.png";
-import { AnimationDiv } from "../components/signUpAnimation";
+import googleIcon from "../../assets/devicon_google.png";
+import { AnimationDiv } from "./signUpAnimation";
 import { SignUpForm } from "./signUpForm";
 export default function SignUp() {
   return (

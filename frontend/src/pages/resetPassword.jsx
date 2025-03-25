@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { requestPasswordReset } from "../components/Auth";
+// import { requestPasswordReset } from "../components/Auth";
 import { useMutation } from "@tanstack/react-query";
 
 export function ResetPassword() {

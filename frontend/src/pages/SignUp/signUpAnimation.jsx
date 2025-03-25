@@ -1,7 +1,7 @@
-import illustration1 from "../assets/4584-removebg-preview.png";
-import illustration2 from "../assets/4889345-removebg-preview.png";
-import illustration3 from "../assets/4892463-removebg-preview.png";
-import dots from "../assets/Frame 1279.png";
+import illustration1 from "../../assets/4584-removebg-preview.png";
+import illustration2 from "../../assets/4889345-removebg-preview.png";
+import illustration3 from "../../assets/4892463-removebg-preview.png";
+import dots from "../../assets/Frame 1279.png";
 import { Carousel } from "antd";
 
 export function AnimationDiv() {
