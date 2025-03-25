@@ -28,7 +28,10 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         setUserId(decoded.user_id);
         setUser(storedUserName);
-        navigate("/app");
+
+        setTimeout(() => {
+          navigate("/app");
+        }, 0);
 
         setUser(storedUserName);
       } catch (error) {
