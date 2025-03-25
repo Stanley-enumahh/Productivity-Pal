@@ -16,6 +16,7 @@ import TasksUi from "./features/Tasks/TasksUi.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TodosUi from "./features/Todos/TodosUi.jsx";
 import Settings from "./features/Settings/Settings.jsx";
+import { Navigate } from "react-router-dom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,6 +32,7 @@ function AppWrapper() {
       <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />
       <AuthProvider>
         <Routes>
+          <Route path="/" element={<Navigate to="/app" replace />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/resetPassword" element={<ResetPassword />} />

@@ -7,6 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
     port: 3000,
+    historyApiFallback: true, // Important for SPA routing
   },
   base: "/", // Ensures correct base path
   build: {
