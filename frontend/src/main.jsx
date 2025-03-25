@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import SignUp from "./pages/SignUp/SignUp.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
+
 import "./index.css";
 import { AuthProvider } from "./context.jsx/AuthContext.jsx";
 import LoginPage from "./pages/Login/loginPage.jsx";
@@ -52,8 +54,8 @@ function AppWrapper() {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <AppWrapper />
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
