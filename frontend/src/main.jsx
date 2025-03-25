@@ -31,16 +31,17 @@ function AppWrapper() {
       <ReactQueryDevtools initialIsOpen={false} position="bottom-left" />
       <AuthProvider>
         <Routes>
-          <Route path="/login" index element={<LoginPage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/app" element={<App />}>
-              <Route path="/app/dashboard" element={<Dashboard />} />
-              <Route path="/app/notes" element={<NoteUi />} />
-              <Route path="/app/tasks" element={<TasksUi />} />
-              <Route path="/app/todos" element={<TodosUi />} />
-              <Route path="/app/settings" element={<Settings />} />
+              <Route index element={<Dashboard />} />
+              <Route path="dashboard" index element={<Dashboard />} />
+              <Route path="notes" element={<NoteUi />} />
+              <Route path="tasks" element={<TasksUi />} />
+              <Route path="todos" element={<TodosUi />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
           </Route>
 

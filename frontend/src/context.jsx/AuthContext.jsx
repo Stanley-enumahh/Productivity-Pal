@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import api from "../utils/api.js";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
@@ -57,7 +58,7 @@ export const AuthProvider = ({ children }) => {
         Cookies.set("username", username, { expires: 7 });
         setUser(username);
         setIsAuthenticated(true);
-        navigate("/");
+        navigate("/app");
         return true;
       }
     } catch (error) {
@@ -92,7 +93,7 @@ export const AuthProvider = ({ children }) => {
           sameSite: "Strict",
         });
 
-        navigate("/app/dashboard");
+        navigate("/app");
       }
     } catch (error) {
       console.error("Login failed:", error.response?.data);
