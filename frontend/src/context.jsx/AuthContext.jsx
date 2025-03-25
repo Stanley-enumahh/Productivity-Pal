@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import api from "../utils/api";
+import api from "../utils/api.js";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-import toast, { Toaster } from "react-hot-toast";
 
 const AuthContext = createContext();
 

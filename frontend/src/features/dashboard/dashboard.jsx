@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Progress } from "antd";
-import { DashboardSidebar } from "./DashboardSibeBar";
-import { DashboardMain } from "./DashboardMain";
+import { DashboardSidebar } from "./DashboardSibeBar.jsx";
+import { DashboardMain } from "./DashboardMain.jsx";
 
 const quotes = [
   "Let's get some work done!",
