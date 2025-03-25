@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router";
-import { SideNav } from "./components/sideNav";
+import { SideNav } from "./components/sideNav.jsx";
 import { Toaster } from "react-hot-toast";
 
 export default function App() {

@@ -1,6 +1,6 @@
 import googleIcon from "../../assets/devicon_google.png";
-import { AnimationDiv } from "./signUpAnimation";
-import { SignUpForm } from "./signUpForm";
+import { AnimationDiv } from "./signUpAnimation.jsx";
+import { SignUpForm } from "./signUpForm.jsx";
 export default function SignUp() {
   return (
     <div className="flex flex-row w-full h-screen">
