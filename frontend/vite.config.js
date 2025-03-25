@@ -8,7 +8,7 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  base: "/", // Ensures correct base path
+  base: "./", // Ensures correct base path
   build: {
     outDir: "dist", // Vercel expects the output in "dist"
   },
