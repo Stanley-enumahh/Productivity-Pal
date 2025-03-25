@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
         setUserId(decoded.user_id);
         setUser(storedUserName);
-        navigate("/app/dashboard");
+        navigate("/app");
 
         setUser(storedUserName);
       } catch (error) {
