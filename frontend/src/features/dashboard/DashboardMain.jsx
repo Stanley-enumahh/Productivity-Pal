@@ -8,7 +8,7 @@ import { useAuth } from "../../context.jsx/AuthContext";
 
 export function DashboardMain() {
   return (
-    <div className="h-[700px] flex flex-col gap-16 w-[70%] overflow-auto">
+    <div className="h-[700px] mb-[70px] flex flex-col gap-16 w-[70%] overflow-auto">
       <GreetingsDiv />
       <SecondDivInMainBoard />
       <RecentTasks />

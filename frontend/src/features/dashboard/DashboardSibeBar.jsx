@@ -4,7 +4,7 @@ import noProfile from "../../assets/blank-profile-picture-973460_1280.png";
 
 export function DashboardSidebar() {
   return (
-    <div className="w-[320px] bg-white h-full mr-[40px] items-center flex flex-col">
+    <div className="w-[320px] h-[770px] bg-white  mr-[40px] items-center flex flex-col">
       <Topbar />
     </div>
   );

@@ -5,7 +5,7 @@ import { LoginForm } from "./LoginForm";
 export default function LoginPage() {
   return (
     <div className="flex flex-row w-full h-screen">
-      <div className="flex flex-col gap-6 bg-deep-blue w-[50%] h-full items-center justify-center">
+      <div className="md:flex hidden flex-col gap-6 bg-deep-blue w-[50%] h-full items-center justify-center">
         <h1 className="text-white text-2xl">Get started</h1>
         <img
           src={illustration}
@@ -13,7 +13,7 @@ export default function LoginPage() {
           className="w-[55%] object-cover"
         />
       </div>
-      <div className="flex flex-col w-[50%] gap-4 justify-center items-center">
+      <div className="flex mt-[70px] md:mt-0 flex-col w-full md:p-0 px-5 md:w-[50%] gap-4 md:justify-center items-center">
         <h1 className="text-3xl font-semibold">Welcome Back</h1>
         <p className=" text-gray-600">
           Your Tasks Are Waiting ,Log In and Stay on Track!

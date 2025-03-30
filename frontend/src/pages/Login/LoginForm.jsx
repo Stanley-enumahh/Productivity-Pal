@@ -27,7 +27,7 @@ export function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="w-[90%] md:w-[70%] flex flex-col gap-5"
+      className="w-full md:w-[70%] flex flex-col gap-5"
     >
       <div className="flex flex-col gap-2">
         <label className="text-sm" htmlFor="username">

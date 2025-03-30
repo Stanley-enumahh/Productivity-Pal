@@ -13,7 +13,7 @@ const quotes = [
 
 export default function Dashboard() {
   return (
-    <div className="w-full flex flex-row gap-4 h-full overflow-hidden">
+    <div className="w-full flex flex-row gap-4 h-screen overflow-auto">
       <DashboardMain />
       <DashboardSidebar />
     </div>

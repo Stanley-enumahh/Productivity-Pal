@@ -1,5 +1,4 @@
-import { FaRegUser } from "react-icons/fa";
-import { LuSquareActivity, LuListTodo } from "react-icons/lu";
+import { LuListTodo } from "react-icons/lu";
 import { TfiWrite } from "react-icons/tfi";
 import { IoLogoAppleAr } from "react-icons/io5";
 import { IoIosSettings } from "react-icons/io";
