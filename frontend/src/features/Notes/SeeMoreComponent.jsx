@@ -2,7 +2,7 @@ import { HiMiniXMark } from "react-icons/hi2";
 
 export const SeeMoreComponent = ({ expandedNote, closeSelectedNotelModal }) => {
   return (
-    <div className="w-full h-full flex flex-col gap-5 ">
+    <div className="w-full h-full flex flex-col gap-5 bg-[#E4EDFF]">
       <span className="w-full flex justify-end">
         <HiMiniXMark
           className="cursor-pointer"

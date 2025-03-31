@@ -2,13 +2,12 @@ import { useNotes } from "../../context.jsx/noteContext";
 import { NoteItem } from "./NoteItem";
 import { SearchBar } from "../../components/SearchBar";
 import emptyNotes from "../Notes/images/Frame 1000004822.png";
-import { useState } from "react";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Flex, Spin } from "antd";
 
 export function NoteList() {
   const { notes, isLoading, isError, isOpen, setIsOpen } = useNotes();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading notes.</p>;
   return (
     <div className="flex flex-col w-full gap-4 mt-[30px] pl-[50px]">
       <SearchBar />
@@ -27,20 +26,30 @@ export function NoteList() {
           ""
         )}
       </div>
-      <div className="flex flex-row w-full h-full">
-        <ul className="flex flex-row flex-wrap mt-3 gap-x-[50px] gap-y-[30px]">
-          {notes.length > 0 ? (
-            notes?.map((note) => <NoteItem key={note.id} note={note} />)
-          ) : (
-            <div className="flex items-center justify-center w-full">
-              <img
-                src={emptyNotes}
-                alt="empty note"
-                className="w-[280px] ml-[170px] h-[300px] object-cover"
-              />
-            </div>
-          )}
-        </ul>
+      <div className="flex flex-row w-full h-full ">
+        {isLoading ? (
+          <div className="w-full h-[200px] mr-[100px] flex justify-center items-center">
+            <Spin indicator={<LoadingOutlined spin />} size="large" />
+          </div>
+        ) : isError ? (
+          <div className="w-full h-[200px] mr-[100px] flex justify-center items-center">
+            <p className="text-red-500"> Error loading notes</p>
+          </div>
+        ) : (
+          <ul className="flex flex-row flex-wrap mt-3 gap-x-[50px] gap-y-[30px]">
+            {notes.length > 0 ? (
+              notes?.map((note) => <NoteItem key={note.id} note={note} />)
+            ) : (
+              <div className="flex items-center justify-center w-full">
+                <img
+                  src={emptyNotes}
+                  alt="empty note"
+                  className="w-[280px] ml-[170px] h-[300px] object-cover"
+                />
+              </div>
+            )}
+          </ul>
+        )}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ function NoteProvider({ children }) {
   function handleClose() {
     setSelectedNote(null);
     setIsOpen(null);
+    setMode("creating");
   }
   const {
     data: notes,

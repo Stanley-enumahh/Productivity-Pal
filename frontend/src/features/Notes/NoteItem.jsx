@@ -26,8 +26,7 @@ export function NoteItem({ note }) {
 
   return (
     <div
-      style={{ backgroundColor: note.BgColor }}
-      className={`w-[420px]  shadow-lg h-[315px] p-8 rounded-lg flex flex-col justify-between ${
+      className={`w-[420px] shadow-lg bg-[#E4EDFF] h-[315px] p-8 rounded-lg flex flex-col gap-8 ${
         isLoading && "opacity-40"
       }`}
     >
@@ -36,7 +35,6 @@ export function NoteItem({ note }) {
         closeSelectedNotelModal={closeSelectedNotelModal}
         closable={false}
         footer={null}
-        style={{ height: "fit-content" }}
       >
         <SeeMoreComponent
           expandedNote={expandedNote}
