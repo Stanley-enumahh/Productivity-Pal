@@ -1,126 +1,124 @@
-// import { useEffect, useReducer, useState } from "react";
-// import api from "../utils/api";
-// import { useContext } from "react";
-// import { useAuth } from "./AuthContext";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createContext, useMemo, useState } from "react";
+import { useContext } from "react";
+import {
+  createNote,
+  deleteNote,
+  editNote,
+  fetchNotes,
+} from "../features/Notes/apiNotes";
+import toast from "react-hot-toast";
 
-// const bgColors = [
-//   "bg-blue-200",
-//   "bg-red-300",
-//   "bg-amber-200",
-//   "bg-pink-200",
-//   "bg-green-200",
-//   "bg-purple-200",
-// ];
+const NotesContext = createContext();
 
-// function getRandomColor() {
-//   return bgColors[Math.floor(Math.random() * bgColors.length)];
-// }
+function NoteProvider({ children }) {
+  const queryClient = useQueryClient();
+  const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState("creating");
+  const [selectedNote, setSelectedNote] = useState(null);
 
-// function getDate() {
-//   const today = new Date();
-//   return today.toLocaleDateString("en-US", {
-//     month: "short",
-//     day: "numeric",
-//     year: "numeric",
-//   });
-// }
+  function handleClose() {
+    setSelectedNote(null);
+    setIsOpen(null);
+  }
+  const {
+    data: notes,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["notes"],
+    queryFn: fetchNotes,
+    staleTime: 1000 * 60 * 2,
+  });
 
-// const NotesContext = createContext();
+  const createMutation = useMutation({
+    mutationFn: createNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["notes"]);
+      toast.success("Note created successfully");
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("Error creating note");
+    },
+  });
 
-// function NoteProvider({ children }) {
-//   const [isOpen, setIsOpen] = useState(false);
-//   // const { user } = useAuth();
+  const editMutation = useMutation({
+    mutationFn: editNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["notes"]);
+      toast.success("Note updated successfully");
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("Error updating note");
+    },
+  });
 
-//   // fetch notes
+  const handleCreate = (newNote) => {
+    createMutation.mutate(newNote);
+    setIsOpen(false);
+  };
 
-//   export async function fetchNotes() {
-//     useEffect(function () {
-//       async function fetchNotes() {
-//         try {
-//           const response = await api.get("/api/notes/");
-//           return response.data;
-//         } catch {
-//           throw new Error("notes could not be loaded");
-//         }
-//       }
+  const handleEdit = (note) => {
+    setMode("editing");
+    setSelectedNote(note);
+    setIsOpen(true);
+  };
 
-//       fetchNotes();
-//     }, []);
-//   }
+  const handleUpdate = (id, edittedNote) => {
+    editMutation.mutate({ id, ...edittedNote });
+    setIsOpen(false);
+  };
 
-//   // add notes
-//   // async function AddNote(newNote) {
-//   //   dispatch({ type: "loading" });
-//   //   try {
-//   //     const response = await api.post("/api/notes", newNote);
-//   //     console.log(response);
-//   //     dispatch({ type: "note/added", payload: response.data });
-//   //   } catch {
-//   //     dispatch({ type: "rejected", payload: "error adding notes..." });
-//   //   }
-//   // }
+  const deleteMutation = useMutation({
+    mutationFn: deleteNote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["notes"],
+      });
+      toast.success("note deleted sucessfully");
+    },
+    onError: () => {
+      console.error("error deleting note");
+      toast.error("error deleting note");
+    },
+  });
 
-//   return (
-//     <NotesContext.Provider value={{ isOpen, setIsOpen }}>
-//       {children}
-//     </NotesContext.Provider>
-//   );
-// }
+  const handleDeleteNote = (id) => {
+    deleteMutation.mutate(id);
+  };
 
-// // function handleSubmit(e) {
-// //   e.preventDefault();
-// //   if (note.id) {
-// //     dispatch({
-// //       type: "note/editted",
-// //       payload: {
-// //         id: note.id,
-// //         title: note.noteTitle,
-// //         info: note.noteInfo,
-// //         bgColor: note.bgColor,
-// //         date: note.date,
-// //       },
-// //     });
-// //   } else {
-// //     dispatch({
-// //       type: "note/added",
-// //       payload: {
-// //         id: crypto.randomUUID(),
-// //         title: note.noteTitle,
-// //         info: note.noteInfo,
-// //         bgColor: getRandomColor(),
-// //         date: getDate(),
-// //       },
-// //     });
-// //   }
+  const value = useMemo(
+    () => ({
+      isOpen,
+      setIsOpen,
+      handleEdit,
+      handleCreate,
+      handleUpdate,
+      handleDeleteNote,
+      mode,
+      setMode,
+      selectedNote,
+      notes,
+      isLoading,
+      isError,
+      handleClose,
+    }),
+    [isOpen, mode, selectedNote, notes, isLoading, isError]
+  );
 
-// //   setIsOpen(false);
-// //   setNote({ noteTitle: "", noteInfo: "", id: null });
-// // }
+  return (
+    <NotesContext.Provider value={value}>{children}</NotesContext.Provider>
+  );
+}
 
-// // function handleEdit(selectedNote) {
-// //   setIsOpen(true);
-// //   setNote({
-// //     id: selectedNote.id,
-// //     noteTitle: selectedNote.title,
-// //     noteInfo: selectedNote.info,
-// //     bgColor: selectedNote.bgColor,
-// //     date: selectedNote.date,
-// //   });
-// // }
+function useNotes() {
+  const context = useContext(NotesContext);
+  if (context === undefined) {
+    throw new Error("useNotes must be used within a NotesProvider");
+  }
+  return context;
+}
 
-// // useEffect(
-// //   function () {
-// //     localStorage.setItem("notes", JSON.stringify(notes));
-// //   },
-// //   [notes]
-// // );
-
-// function useNotes() {
-//   const context = useContext(NotesContext);
-//   if (context === undefined) {
-//     throw new Error("useNotes must be used within a NotesProvider");
-//   }
-//   return context;
-// }
-
-// export { NoteProvider, useNotes };
+export { NoteProvider, useNotes };

@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error("Invalid token:", error);
         Cookies.remove("accessToken");
+        setIsAuthenticated(false);
         navigate("/login");
       }
     }

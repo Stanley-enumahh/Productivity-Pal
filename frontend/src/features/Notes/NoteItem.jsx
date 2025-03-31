@@ -1,51 +1,34 @@
 import { BsTrash3 } from "react-icons/bs";
 import { LiaEditSolid } from "react-icons/lia";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteNote } from "./apiNotes";
-import toast from "react-hot-toast";
 import { Modal } from "antd";
-import { HiMiniXMark } from "react-icons/hi2";
 import { useState } from "react";
+import { useNotes } from "../../context.jsx/noteContext";
+import { SeeMoreComponent } from "./SeeMoreComponent";
 
-export function NoteItem({ note, onEdit }) {
+export function NoteItem({ note }) {
+  const { handleEdit, handleDeleteNote, isLoading } = useNotes();
+  const [expandedNote, setExpandedNote] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null);
   const [ShowDeleteModal, setShowDeleteModal] = useState(false);
-  const queryClient = useQueryClient();
+
+  function handleExpand(note) {
+    setExpandedNote(note);
+    setIsModalOpen(true);
+  }
   const handleDelete = () => {
     setShowDeleteModal(true);
   };
 
-  const showSelectedNoteModal = (note) => {
-    setIsModalOpen(true);
-    setSelectedNote(note);
-  };
-
   const closeSelectedNotelModal = () => {
     setIsModalOpen(false);
-    setSelectedNote(null);
+    setExpandedNote(null);
   };
 
-  const { mutate, status, error } = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["notes"],
-      });
-      toast.success("note deleted sucessfully");
-    },
-    onError: () => {
-      console.error("error deleting note");
-      toast.error("error deleting note");
-    },
-  });
-
-  const deleting = status === "pending";
   return (
     <div
       style={{ backgroundColor: note.BgColor }}
       className={`w-[420px]  shadow-lg h-[315px] p-8 rounded-lg flex flex-col justify-between ${
-        deleting && "opacity-40"
+        isLoading && "opacity-40"
       }`}
     >
       <Modal
@@ -55,20 +38,10 @@ export function NoteItem({ note, onEdit }) {
         footer={null}
         style={{ height: "fit-content" }}
       >
-        <div className="w-full h-full flex flex-col gap-5 ">
-          <span className="w-full flex justify-end">
-            <HiMiniXMark
-              className="cursor-pointer"
-              onClick={closeSelectedNotelModal}
-            />
-          </span>
-          <h1 className="text-[16px] font-medium capitalize w-[70%]">
-            {selectedNote?.title}
-          </h1>
-          <p className="text-sm leading-[24px] font-light break-words">
-            {selectedNote?.content}
-          </p>
-        </div>
+        <SeeMoreComponent
+          expandedNote={expandedNote}
+          closeSelectedNotelModal={closeSelectedNotelModal}
+        />
       </Modal>
 
       {/* delte modal */}
@@ -91,7 +64,7 @@ export function NoteItem({ note, onEdit }) {
             </button>
             <button
               onClick={() => {
-                mutate(note.id);
+                handleDeleteNote(note.id);
                 setShowDeleteModal(false);
               }}
               className="bg-[#FF4444] cursor-pointer text-white w-[150px] py-3 rounded-lg"
@@ -111,11 +84,10 @@ export function NoteItem({ note, onEdit }) {
           <LiaEditSolid
             size={20}
             className=" cursor-pointer"
-            onClick={() => onEdit(note)}
+            onClick={() => handleEdit(note)}
           />
           <BsTrash3
             onClick={handleDelete}
-            // onClick={() => mutate(note.id)}
             className=" cursor-pointer text-[#FF0707]"
           />
         </span>
@@ -124,7 +96,7 @@ export function NoteItem({ note, onEdit }) {
         {note.content.slice(0, 300)}
         {note.content.length > 300 && (
           <button
-            onClick={() => showSelectedNoteModal(note)}
+            onClick={() => handleExpand(note)}
             className="cursor-pointer ml-3 font-semibold text-sm"
           >
             See more

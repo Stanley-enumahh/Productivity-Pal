@@ -16,6 +16,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TodosUi from "./features/Todos/TodosUi.jsx";
 import Settings from "./features/Settings/Settings.jsx";
 import { Navigate } from "react-router-dom";
+import { NoteProvider } from "./context.jsx/noteContext.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -35,15 +36,23 @@ function AppWrapper() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/resetPassword" element={<ResetPassword />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/app" element={<App />}>
-              <Route index element={<Dashboard />} />
-              <Route path="dashboard" index element={<Dashboard />} />
-              <Route path="notes" element={<NoteUi />} />
-              <Route path="tasks" element={<TasksUi />} />
-              <Route path="todos" element={<TodosUi />} />
-              <Route path="settings" element={<Settings />} />
-            </Route>
+          <Route
+            path="/app"
+            element={
+              <ProtectedRoute>
+                <NoteProvider>
+                  <App />
+                </NoteProvider>
+              </ProtectedRoute>
+            }
+          >
+            <Route index element={<Dashboard />} />
+            <Route path="dashboard" index element={<Dashboard />} />
+
+            <Route path="notes" element={<NoteUi />} />
+            <Route path="tasks" element={<TasksUi />} />
+            <Route path="todos" element={<TodosUi />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
 
           <Route path="*" element={<h1>404 Not Found</h1>} />

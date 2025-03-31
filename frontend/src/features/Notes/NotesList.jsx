@@ -1,25 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
-// import { useNotes } from "../../context.jsx/noteContext";
-import { fetchNotes } from "./apiNotes";
+import { useNotes } from "../../context.jsx/noteContext";
 import { NoteItem } from "./NoteItem";
 import { SearchBar } from "../../components/SearchBar";
 import emptyNotes from "../Notes/images/Frame 1000004822.png";
+import { useState } from "react";
 
-export function NoteList({
-  selectedBg,
-  setShowForm,
-  showForm,
-  onEdit,
-  handleCreate,
-}) {
-  const {
-    data: notes,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["notes"],
-    queryFn: fetchNotes,
-  });
+export function NoteList() {
+  const { notes, isLoading, isError, isOpen, setIsOpen } = useNotes();
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading notes.</p>;
@@ -30,9 +16,9 @@ export function NoteList({
         <h1 className="text-black dark:text-white text-3xl font-medium mt-7">
           My Notes
         </h1>
-        {!showForm ? (
+        {!isOpen ? (
           <button
-            onClick={() => handleCreate()}
+            onClick={() => setIsOpen(true)}
             className="bg-[#2563EB] rounded-xl w-fit flex flex-row gap-2 cursor-pointer shadow-lg hover:opacity-80 duration-200 transition-all text-white text-xs px-3 py-2 items-center"
           >
             <p className="px-1 border rounded-full">+</p> <span>Add note</span>
@@ -44,14 +30,7 @@ export function NoteList({
       <div className="flex flex-row w-full h-full">
         <ul className="flex flex-row flex-wrap mt-3 gap-x-[50px] gap-y-[30px]">
           {notes.length > 0 ? (
-            notes?.map((note) => (
-              <NoteItem
-                key={note.id}
-                note={note}
-                setShowForm={setShowForm}
-                onEdit={onEdit}
-              />
-            ))
+            notes?.map((note) => <NoteItem key={note.id} note={note} />)
           ) : (
             <div className="flex items-center justify-center w-full">
               <img
