@@ -11,7 +11,6 @@ export async function fetchNotes() {
 
 export async function createNote(newNote) {
   const response = await api.post("api/notes/", newNote);
-  console.log(response);
   return response.data;
 }
 

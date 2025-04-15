@@ -1,4 +1,4 @@
-import { useNotes } from "../../context.jsx/noteContext";
+import { useNotes } from "../../context/noteContext";
 import { AddNoteForm } from "./NoteForm";
 import { NoteList } from "./NotesList";
 

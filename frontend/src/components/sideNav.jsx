@@ -5,7 +5,7 @@ import { IoIosSettings } from "react-icons/io";
 import { CiLogout } from "react-icons/ci";
 import { NavLink } from "react-router";
 import { Logo } from "./logo.jsx";
-import { useAuth } from "../context.jsx/AuthContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export function SideNav() {
   const { logout } = useAuth();

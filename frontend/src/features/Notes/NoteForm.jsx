@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useNotes } from "../../context.jsx/noteContext";
+import { useNotes } from "../../context/noteContext";
 
 export function AddNoteForm() {
   const {

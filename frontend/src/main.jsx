@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import SignUp from "./pages/SignUp/SignUp.jsx";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
-import { AuthProvider } from "./context.jsx/AuthContext.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 import LoginPage from "./pages/Login/loginPage.jsx";
 import { ResetPassword } from "./pages/resetPassword.jsx";
 import ProtectedRoute from "./pages/protectedRoute.jsx";
@@ -16,7 +16,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import TodosUi from "./features/Todos/TodosUi.jsx";
 import Settings from "./features/Settings/Settings.jsx";
 import { Navigate } from "react-router-dom";
-import { NoteProvider } from "./context.jsx/noteContext.jsx";
+import { NoteProvider } from "./context/noteContext.jsx";
+import { TodoProvider } from "./context/TodoContext.jsx";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,7 +42,9 @@ function AppWrapper() {
             element={
               <ProtectedRoute>
                 <NoteProvider>
-                  <App />
+                  <TodoProvider>
+                    <App />
+                  </TodoProvider>
                 </NoteProvider>
               </ProtectedRoute>
             }

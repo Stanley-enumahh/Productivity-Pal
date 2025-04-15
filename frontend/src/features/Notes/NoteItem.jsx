@@ -2,7 +2,7 @@ import { BsTrash3 } from "react-icons/bs";
 import { LiaEditSolid } from "react-icons/lia";
 import { Modal } from "antd";
 import { useState } from "react";
-import { useNotes } from "../../context.jsx/noteContext";
+import { useNotes } from "../../context/noteContext";
 import { SeeMoreComponent } from "./SeeMoreComponent";
 
 export function NoteItem({ note }) {

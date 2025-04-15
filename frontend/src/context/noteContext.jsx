@@ -19,7 +19,7 @@ function NoteProvider({ children }) {
 
   function handleClose() {
     setSelectedNote(null);
-    setIsOpen(null);
+    setIsOpen(false);
     setMode("creating");
   }
   const {

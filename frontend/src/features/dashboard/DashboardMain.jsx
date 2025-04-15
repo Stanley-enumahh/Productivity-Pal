@@ -4,7 +4,7 @@ import hand from "../../assets/noto_waving-hand.png";
 import { Milestone } from "./Milestone";
 import { CiSquarePlus } from "react-icons/ci";
 import emptyTask from "../../assets/add-files-concept-illustration 1.png";
-import { useAuth } from "../../context.jsx/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 
 export function DashboardMain() {
   return (
