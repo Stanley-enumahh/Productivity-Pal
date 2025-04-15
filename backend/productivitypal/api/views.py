@@ -229,7 +229,7 @@ class NoteDetailView(generics.RetrieveUpdateDestroyAPIView):
     def  get_queryset(self):
         return Note.objects.filter(user=self.request.user)
     
-# List and Create Notes
+# List and Create Todos
 class TodoListCreateView(generics.ListCreateAPIView):
     serializer_class = TodoSerializer
     permission_classes = [IsAuthenticated]

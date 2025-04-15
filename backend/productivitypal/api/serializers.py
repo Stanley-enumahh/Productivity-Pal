@@ -103,9 +103,15 @@ class TodoItemSerializer(serializers.ModelSerializer):
         ]
 
 
+class NestedTodoItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TodoItem
+        fields = ['id', 'title', 'completed']
+        read_only_fields = ['id']
+
 
 class TodoSerializer(serializers.ModelSerializer):
-    todoitems = TodoItemSerializer(many=True, required=False)
+    todoitems = NestedTodoItemSerializer(many=True, required=False)
     class Meta:
         model = Todo
         fields = [
@@ -120,15 +126,12 @@ class TodoSerializer(serializers.ModelSerializer):
 
     
     def create(self, validated_data):
-        request = self.context.get('request')
-        validated_data['user'] = request.user  # Auto-assign the user
-
         # Extract nested items
         todo_items_data = validated_data.pop('todoitems', [])
 
         # Create the Todo instance
         todo = Todo.objects.create(**validated_data)
-
+        
         # Create the associated TodoItems
         for item_data in todo_items_data:
             TodoItem.objects.create(todo=todo, **item_data)
