@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { TiDeleteOutline } from "react-icons/ti";
 import { useTodos } from "../../context/TodoContext";
 import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 export const TodoForm = () => {
-  const { handleClose, setDueDate, handleCreate, dueDate, mode } = useTodos();
+  const {
+    handleClose,
+    setDueDate,
+    handleCreate,
+    dueDate,
+    mode,
+    isLoading,
+    handleUpdate,
+    setIsOpen,
+    selectedTodo,
+  } = useTodos();
   const [tempTodos, setTempTodos] = useState([]);
   const [name, setName] = useState("");
   const {
@@ -22,6 +33,21 @@ export const TodoForm = () => {
     setDueDate(dateString);
   };
 
+  useEffect(() => {
+    if (mode === "editing" && selectedTodo) {
+      setValue("title", selectedTodo.title || "");
+      setTempTodos(
+        selectedTodo.todoitems?.map((item) => ({
+          tempId: crypto.randomUUID(), // add tempId for deletion
+          title: item.title,
+        })) || []
+      );
+      if (selectedTodo.due_date) {
+        setDueDate(selectedTodo.due_date); // store as string for formatting
+      }
+    }
+  }, [mode, selectedTodo, setValue]);
+
   const onSubmit = async (data) => {
     if (mode === "creating") {
       handleCreate({
@@ -31,9 +57,22 @@ export const TodoForm = () => {
           title: todo.title,
         })),
       });
+    } else if (mode === "editing") {
+      handleUpdate(selectedTodo.id, {
+        title: data.title,
+        due_date: formatDate(dueDate),
+        todoitems: tempTodos.map((todo) => ({
+          title: todo.title,
+        })),
+      });
     }
+
+    reset();
+    setIsOpen(false);
+    console.log();
   };
 
+  //add individual tods items
   function handleAddTodo() {
     if (name.trim() === "") return;
     const newTodo = {
@@ -65,7 +104,10 @@ export const TodoForm = () => {
             {errors.title && (
               <p className="text-[10px] text-red-500">{errors.title.message}</p>
             )}
-            <DatePicker onChange={onDateChange} />
+            <DatePicker
+              onChange={onDateChange}
+              defaultValue={dueDate ? dayjs(dueDate) : null}
+            />
           </div>
         </div>
         <div className="flex flex-row w-full justify-between">
@@ -78,6 +120,7 @@ export const TodoForm = () => {
             onChange={(e) => setName(e.target.value)}
           />
           <button
+            disabled={isLoading}
             onClick={handleAddTodo}
             className="bg-[#2563EB] cursor-pointer px-6 text-white rounded-lg hover:opacity-80 "
           >
@@ -98,19 +141,18 @@ export const TodoForm = () => {
         </ul>
       </div>
       <button
+        disabled={isLoading}
         onClick={handleSubmit(onSubmit)}
         type="submit"
         className="bg-[#2563EB] cursor-pointer rounded-lg hover:opacity-80 duration-200 transition-all text-white text-xs py-4 "
       >
-        Submit
-        {/* {isCreating ? "creating note" : "Save note"} */}
-        {/* {isLoading
+        {isLoading
           ? mode === "creating"
             ? "Creating note..."
             : "Updating note..."
           : mode === "creating"
           ? "Save Note"
-          : "Update Note"} */}
+          : "Update Note"}
       </button>
       <button
         onClick={handleClose}

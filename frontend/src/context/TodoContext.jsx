@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, useMemo, useState } from "react";
-import { createTodo, deleteTodo, fetchTodos } from "../Services/Todos";
+import {
+  createTodo,
+  deleteTodo,
+  editTodo,
+  fetchTodos,
+} from "../Services/Todos";
 import toast from "react-hot-toast";
 
 const TodoContext = createContext();
@@ -10,7 +15,7 @@ function TodoProvider({ children }) {
   const [mode, setMode] = useState("creating");
   const [isOpen, setIsOpen] = useState(false);
   const [dueDate, setDueDate] = useState("");
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [selectedTodo, setSelectedTodo] = useState(null);
 
   const {
     data: todos,
@@ -23,7 +28,7 @@ function TodoProvider({ children }) {
   });
 
   function handleClose() {
-    setSelectedNote(null);
+    setSelectedTodo(null);
     setIsOpen(false);
     setMode("creating");
   }
@@ -40,9 +45,32 @@ function TodoProvider({ children }) {
     },
   });
 
+  const editMutation = useMutation({
+    mutationFn: editTodo,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["todos"]);
+      toast.success("Todo updated successfully");
+      setIsOpen(false);
+    },
+    onError: () => {
+      toast.error("Error updating todo");
+    },
+  });
+
   const handleCreate = (newTodo) => {
     setMode("creating");
     createMutation.mutate(newTodo);
+  };
+
+  const handleEdit = (todo) => {
+    setMode("editing");
+    setSelectedTodo(todo);
+    setIsOpen(true);
+  };
+
+  const handleUpdate = (id, edittedTodo) => {
+    editMutation.mutate({ id, ...edittedTodo });
+    setIsOpen(false);
   };
 
   const deleteMutation = useMutation({
@@ -73,11 +101,14 @@ function TodoProvider({ children }) {
       handleClose,
       setDueDate,
       handleCreate,
+      selectedTodo,
+      handleEdit,
+      handleUpdate,
       dueDate,
       mode,
       handleDeleteTodo,
     }),
-    [todos, isLoading, isError, isOpen, dueDate, mode]
+    [todos, isLoading, isError, isOpen, dueDate, mode, selectedTodo]
   );
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

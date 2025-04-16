@@ -13,7 +13,6 @@ export async function fetchTodos() {
 export async function createTodo(newTodo) {
   const response = await api.post("api/todos/", newTodo);
   console.log(response.data);
-  // console.log(newTodo);
   return response.data;
 }
 
@@ -24,4 +23,9 @@ export const deleteTodo = async (Id) => {
   } catch (error) {
     throw new Error(error.response?.data?.message || "Failed to delete todo");
   }
+};
+
+export const editTodo = async ({ id, ...edittedTodo }) => {
+  const response = await api.put(`api/todos/${id}`, edittedTodo);
+  return response.data;
 };
